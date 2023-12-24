@@ -1,13 +1,16 @@
 import express, { Application } from 'express';
+import Routes from './routes/routes';
 
 export default class App {
   private app: Application;
+  private routeController: Routes;
 
   constructor() {
     this.app = express();
 
     this.config();
 
+    this.routeController = new Routes();
     this.routes();
   }
 
@@ -15,7 +18,9 @@ export default class App {
     this.app.use(express.json());
   }
 
-  private routes(): void {}
+  private routes(): void {
+    this.app.use(this.routeController.router);
+  }
 
   public listen(port: number): void {
     this.app.listen(port, () =>
