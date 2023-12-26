@@ -3,7 +3,7 @@ import type { RefreshToken, RevokedToken } from './tokenRepository.d';
 
 export default class TokenRepository {
   public async getRefreshToken(
-    data: Omit<RefreshToken, 'id' | 'createdAt'>,
+    data: Omit<RefreshToken, 'id' | 'createdAt' | 'expiresAt' | 'userId'>,
   ): Promise<RefreshToken | null> {
     return await prisma.refreshToken.findFirst({
       where: { token: data.token },
@@ -30,20 +30,18 @@ export default class TokenRepository {
   }
 
   public async getRevokedToken(
-    data: Omit<RefreshToken, 'id' | ' createAt'>,
+    data: Omit<RevokedToken, 'id' | 'revokedAt' | 'expiresAt' | 'userId'>,
   ): Promise<RevokedToken | null> {
     return await prisma.revokedToken.findFirst({
       where: { token: data.token },
     });
   }
 
-  public async addRevokedToken(
-    data: Omit<RevokedToken, 'id' | 'revokedAt'>,
-  ): Promise<void> {
+  public async addRevokedToken(data: Omit<RevokedToken, 'id'>): Promise<void> {
     await prisma.revokedToken.create({
       data: {
         token: data.token,
-        revoketdAt: data.revoketdAt,
+        revokedAt: data.revokedAt,
         expiresAt: data.expiresAt,
         user: { connect: { id: data.userId } },
       },
