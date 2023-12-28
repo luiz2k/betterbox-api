@@ -38,10 +38,10 @@ export default class AuthService {
 
     const JWT_SECRET: string = process.env.JWT_SECRET;
 
-    const accessToken: string = jwt.sign({ id: user.id }, JWT_SECRET, {
+    const accessToken: string = jwt.sign({ userId: user.id }, JWT_SECRET, {
       expiresIn: '1h',
     });
-    const refreshToken: string = jwt.sign({ id: user.id }, JWT_SECRET, {
+    const refreshToken: string = jwt.sign({ userId: user.id }, JWT_SECRET, {
       expiresIn: '7d',
     });
 
@@ -80,12 +80,20 @@ export default class AuthService {
 
     const JWT_SECRET: string = process.env.JWT_SECRET;
 
-    const accessToken: string = jwt.sign({ id: createUser.id }, JWT_SECRET, {
-      expiresIn: '1h',
-    });
-    const refreshToken: string = jwt.sign({ id: createUser.id }, JWT_SECRET, {
-      expiresIn: '7d',
-    });
+    const accessToken: string = jwt.sign(
+      { userId: createUser.id },
+      JWT_SECRET,
+      {
+        expiresIn: '1h',
+      },
+    );
+    const refreshToken: string = jwt.sign(
+      { userId: createUser.id },
+      JWT_SECRET,
+      {
+        expiresIn: '7d',
+      },
+    );
 
     const createdAt: Date = new Date();
     const expiresAt: Date = new Date(createdAt);
