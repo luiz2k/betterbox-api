@@ -1,5 +1,5 @@
 import prisma from '../database/database';
-import type { User, UserWithProfile } from './authRepostiroy.d';
+import type { User, UserWithProfile } from './authRepository.d';
 
 export default class AuthRepository {
   public async getUserByEmail(
