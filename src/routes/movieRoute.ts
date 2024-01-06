@@ -16,5 +16,10 @@ export default class MovieRoute {
       '/addToWatched',
       this.movieController.addToWatched.bind(this.movieController),
     );
+
+    this.router.post(
+      '/removeFromWatched',
+      this.movieController.removeFromWatched.bind(this.movieController),
+    );
   }
 }
