@@ -15,6 +15,19 @@ export default class MovieRepository {
     });
   }
 
+  public async getMovieWatched(
+    data: Omit<MovieWatched, 'watchedDate'>,
+  ): Promise<MovieWatched | null> {
+    return await prisma.movieWatched.findUnique({
+      where: {
+        userId_movieId: {
+          userId: data.userId,
+          movieId: data.movieId,
+        },
+      },
+    });
+  }
+
   public async addToWatched(data: MovieWatched): Promise<void> {
     await prisma.movieWatched.create({
       data: { ...data },
