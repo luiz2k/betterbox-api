@@ -13,7 +13,7 @@ export default class MovieRoute {
 
   private routes(): void {
     this.router.post(
-      '/addToFavorites',
+      '/addToWatched',
       this.movieController.addToWatched.bind(this.movieController),
     );
   }
