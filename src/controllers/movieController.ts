@@ -12,7 +12,7 @@ export default class MovieController {
 
   public async addToWatched(req: Request, res: Response) {
     const { movieId }: { movieId: number } = req.body;
-    const userId: number = 1;
+    const userId: number = req.userId;
 
     const authorization = process.env.TMDB_AUTHORIZATION;
 
