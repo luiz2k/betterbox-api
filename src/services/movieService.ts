@@ -4,6 +4,9 @@ import type {
   MovieWatched,
   AddToWatched,
   RemoveFromWatched,
+  FavoriteMovie,
+  AddToFavorite,
+  RemoveFromFavorite,
 } from './movieService.d';
 
 export default class MovieService {
@@ -43,6 +46,48 @@ export default class MovieService {
       throw new Error('Impossível remover um filme que nunca foi assistido.');
 
     await this.movieRepository.removeFromWatched({
+      userId,
+      movieId: data.id,
+    });
+  }
+
+  public async addToFavorite(data: AddToFavorite, userId: number) {
+    const movie = await this.movieRepository.getMovieById({ id: data.id });
+
+    if (!movie)
+      await this.movieRepository.addMovie({
+        id: data.id,
+        name: data.name,
+      });
+
+    const favoriteMovie: FavoriteMovie | null =
+      await this.movieRepository.getFavoriteMovie({
+        userId,
+        movieId: data.id,
+      });
+
+    if (!favoriteMovie) throw new Error('Esse filme já está favoritdo.');
+
+    await this.movieRepository.addToFavorite({
+      userId,
+      movieId: data.id,
+    });
+  }
+
+  public async removeFromFavorite(
+    data: RemoveFromFavorite,
+    userId: number,
+  ): Promise<void> {
+    const favoriteMovie: FavoriteMovie | null =
+      await this.movieRepository.getFavoriteMovie({
+        userId,
+        movieId: data.id,
+      });
+
+    if (!favoriteMovie)
+      throw new Error('Impossível remover um filme que nunca foi favoritado.');
+
+    await this.movieRepository.removeFromFavorite({
       userId,
       movieId: data.id,
     });

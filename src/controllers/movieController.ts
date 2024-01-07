@@ -3,6 +3,8 @@ import axios from 'axios';
 
 import MovieService from '../services/movieService';
 
+import type { MovieId } from './movieController.d';
+
 export default class MovieController {
   private movieService: MovieService;
 
@@ -65,6 +67,72 @@ export default class MovieController {
       return res
         .status(200)
         .send(`O filme ${responseFormat.name} foi removido de assistidos.`);
+    } catch (error) {
+      console.error(error);
+
+      return error instanceof Error
+        ? res.status(400).send({ error: 'Erro interno do servidor.' })
+        : res.status(400).send({ error: 'Erro interno do servidor.' });
+    }
+  }
+
+  public async addToFavorite(req: Request, res: Response) {
+    const { movieId }: MovieId = req.body;
+    const userId: number = req.userId;
+
+    const authorization: string = process.env.TMDB_AUTHORIZATION;
+
+    try {
+      const response = await axios({
+        method: 'get',
+        url: `https://api.themoviedb.org/3/movie/${movieId}?language=pt-BR`,
+        headers: { Authorization: `Bearer ${authorization}` },
+      });
+
+      const formattedResponse = {
+        id: response.data.id,
+        name: response.data.title,
+      };
+
+      await this.movieService.addToFavorite(formattedResponse, userId);
+
+      return res
+        .status(200)
+        .send(
+          `O filme ${formattedResponse.name} foi adicionado aos favoritos.`,
+        );
+    } catch (error) {
+      console.error(error);
+
+      return error instanceof Error
+        ? res.status(400).send({ error: 'Erro interno do servidor.' })
+        : res.status(400).send({ error: 'Erro interno do servidor.' });
+    }
+  }
+
+  public async removeFromFavorite(req: Request, res: Response) {
+    const { movieId }: MovieId = req.body;
+    const userId: number = req.userId;
+
+    const authorization: string = process.env.TMDB_AUTHORIZATION;
+
+    try {
+      const response = await axios({
+        method: 'get',
+        url: `https://api.themoviedb.org/3/movie/${movieId}?language=pt-BR`,
+        headers: { Authorization: `Bearer ${authorization}` },
+      });
+
+      const formattedResponse = {
+        id: response.data.id,
+        name: response.data.title,
+      };
+
+      await this.movieService.removeFromFavorite(formattedResponse, userId);
+
+      return res
+        .status(200)
+        .send(`O filme ${formattedResponse.name} foi removido dos favoritos.`);
     } catch (error) {
       console.error(error);
 

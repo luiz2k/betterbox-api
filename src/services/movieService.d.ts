@@ -13,4 +13,25 @@ interface MovieWatched {
   watchedDate: Date;
 }
 
-export { AddToWatched, RemoveFromWatched, MovieWatched };
+interface AddToFavorite {
+  id: number;
+  name: string;
+}
+
+interface RemoveFromFavorite {
+  id: number;
+}
+
+interface FavoriteMovie {
+  userId: number;
+  movieId: number;
+}
+
+export {
+  AddToWatched,
+  RemoveFromWatched,
+  MovieWatched,
+  AddToFavorite,
+  RemoveFromFavorite,
+  FavoriteMovie,
+};
