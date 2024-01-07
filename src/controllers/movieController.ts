@@ -12,11 +12,11 @@ export default class MovieController {
     this.movieService = new MovieService();
   }
 
-  public async addToWatched(req: Request, res: Response) {
-    const { movieId }: { movieId: number } = req.body;
+  public async addToWatched(req: Request, res: Response): Promise<Response> {
+    const { movieId }: MovieId = req.body;
     const userId: number = req.userId;
 
-    const authorization = process.env.TMDB_AUTHORIZATION;
+    const authorization: string = process.env.TMDB_AUTHORIZATION;
 
     try {
       const response = await axios({
@@ -44,8 +44,11 @@ export default class MovieController {
     }
   }
 
-  public async removeFromWatched(req: Request, res: Response) {
-    const { movieId }: { movieId: number } = req.body;
+  public async removeFromWatched(
+    req: Request,
+    res: Response,
+  ): Promise<Response> {
+    const { movieId }: MovieId = req.body;
     const userId: number = req.userId;
 
     const authorization: string = process.env.TMDB_AUTHORIZATION;
@@ -76,7 +79,7 @@ export default class MovieController {
     }
   }
 
-  public async addToFavorite(req: Request, res: Response) {
+  public async addToFavorite(req: Request, res: Response): Promise<Response> {
     const { movieId }: MovieId = req.body;
     const userId: number = req.userId;
 
@@ -110,7 +113,10 @@ export default class MovieController {
     }
   }
 
-  public async removeFromFavorite(req: Request, res: Response) {
+  public async removeFromFavorite(
+    req: Request,
+    res: Response,
+  ): Promise<Response> {
     const { movieId }: MovieId = req.body;
     const userId: number = req.userId;
 
