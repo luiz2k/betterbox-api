@@ -69,7 +69,7 @@ export default class MovieService {
         movieId: data.id,
       });
 
-    if (!favoriteMovie) throw new Error('Esse filme já está favoritdo.');
+    if (favoriteMovie) throw new Error('Esse filme já está favoritdo.');
 
     await this.movieRepository.addToFavorite({
       userId,
