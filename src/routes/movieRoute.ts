@@ -21,5 +21,15 @@ export default class MovieRoute {
       '/removeFromWatched',
       this.movieController.removeFromWatched.bind(this.movieController),
     );
+
+    this.router.post(
+      '/addToFavorite',
+      this.movieController.addToFavorite.bind(this.movieController),
+    );
+
+    this.router.post(
+      '/removeFromFavorite',
+      this.movieController.removeFromFavorite.bind(this.movieController),
+    );
   }
 }
