@@ -1,3 +1,4 @@
+import { favoriteMovie } from '@prisma/client';
 import prisma from '../database/database';
 
 import type { Movie, MovieWatched } from './movieRepository.d';
@@ -38,6 +39,36 @@ export default class MovieRepository {
     data: Omit<MovieWatched, 'watchedDate'>,
   ): Promise<void> {
     await prisma.movieWatched.delete({
+      where: {
+        userId_movieId: {
+          userId: data.userId,
+          movieId: data.movieId,
+        },
+      },
+    });
+  }
+
+  public async getFavoriteMovie(
+    data: favoriteMovie,
+  ): Promise<favoriteMovie | null> {
+    return await prisma.favoriteMovie.findUnique({
+      where: {
+        userId_movieId: {
+          userId: data.userId,
+          movieId: data.movieId,
+        },
+      },
+    });
+  }
+
+  public async addToFavorite(data: favoriteMovie): Promise<void> {
+    await prisma.favoriteMovie.create({
+      data: { ...data },
+    });
+  }
+
+  public async removeFromFavorite(data: favoriteMovie): Promise<void> {
+    await prisma.favoriteMovie.delete({
       where: {
         userId_movieId: {
           userId: data.userId,
