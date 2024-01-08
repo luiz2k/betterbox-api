@@ -31,5 +31,10 @@ export default class MovieRoute {
       '/removeFromFavorite',
       this.movieController.removeFromFavorite.bind(this.movieController),
     );
+
+    this.router.post(
+      '/createComment',
+      this.movieController.createComment.bind(this.movieController),
+    );
   }
 }
