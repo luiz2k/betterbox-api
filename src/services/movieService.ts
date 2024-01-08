@@ -9,6 +9,7 @@ import type {
   RemoveFromFavorite,
   CreateComment,
   Comment,
+  EditComment,
 } from './movieService.d';
 
 export default class MovieService {
@@ -108,5 +109,20 @@ export default class MovieService {
       throw new Error('Só é possível fazer um comentário por filme.');
 
     await this.movieRepository.createComment({ ...data });
+  }
+
+  public async editComment(data: EditComment): Promise<void> {
+    const comment: Comment | null = await this.movieRepository.getCommentById({
+      userId: data.userId,
+      movieId: data.movieId,
+    });
+
+    if (!comment)
+      throw new Error('Impossível editar um comentário que não existe.');
+
+    await this.movieRepository.editComment({
+      ...data,
+      editedAt: comment.commentedAt,
+    });
   }
 }

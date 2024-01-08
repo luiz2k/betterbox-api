@@ -184,4 +184,39 @@ export default class MovieController {
         : res.status(400).send({ error: 'Erro interno do servidor.' });
     }
   }
+
+  public async editComment(req: Request, res: Response): Promise<Response> {
+    const { movieId, comment }: MovieId & Comment = req.body;
+    const userId: number = req.userId;
+
+    try {
+      const response = await axios({
+        method: 'get',
+        url: `https://api.themoviedb.org/3/movie/${movieId}?language=pt-BR`,
+        headers: { Authorization: `Bearer ${process.env.TMDB_AUTHORIZATION}` },
+      });
+
+      const formattedResponse = {
+        id: response.data.id,
+        name: response.data.title,
+      };
+
+      await this.movieService.editComment({
+        userId,
+        movieId: formattedResponse.id,
+        comment,
+        editedAt: new Date(),
+      });
+
+      return res
+        .status(200)
+        .send(`Comentário editado no filme ${formattedResponse.name}.`);
+    } catch (error) {
+      console.error(error);
+
+      return error instanceof Error
+        ? res.status(400).send({ error: 'Erro interno do servidor.' })
+        : res.status(400).send({ error: 'Erro interno do servidor.' });
+    }
+  }
 }
