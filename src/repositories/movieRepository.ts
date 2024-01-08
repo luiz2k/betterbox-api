@@ -100,7 +100,7 @@ export default class MovieRepository {
   }
 
   public async editComment(
-    data: Omit<MovieComment, 'CommentDate'>,
+    data: Omit<MovieComment, 'commentedAt'>,
   ): Promise<void> {
     await prisma.movieComment.update({
       where: { userId_movieId: { userId: data.userId, movieId: data.movieId } },
