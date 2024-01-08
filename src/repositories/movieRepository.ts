@@ -1,7 +1,7 @@
 import { favoriteMovie } from '@prisma/client';
 import prisma from '../database/database';
 
-import type { Movie, MovieWatched } from './movieRepository.d';
+import type { Movie, MovieComment, MovieWatched } from './movieRepository.d';
 
 export default class MovieRepository {
   public async getMovieById(data: Omit<Movie, 'name'>): Promise<Movie | null> {
@@ -75,6 +75,44 @@ export default class MovieRepository {
           movieId: data.movieId,
         },
       },
+    });
+  }
+
+  public async getCommentById(
+    data: Omit<MovieComment, 'comment' | 'commentedAt' | 'editedAt'>,
+  ): Promise<MovieComment | null> {
+    return await prisma.movieComment.findUnique({
+      where: {
+        userId_movieId: {
+          userId: data.userId,
+          movieId: data.movieId,
+        },
+      },
+    });
+  }
+
+  public async createComment(
+    data: Omit<MovieComment, 'editedAt'>,
+  ): Promise<void> {
+    await prisma.movieComment.create({
+      data: { ...data },
+    });
+  }
+
+  public async editComment(
+    data: Omit<MovieComment, 'CommentDate'>,
+  ): Promise<void> {
+    await prisma.movieComment.update({
+      where: { userId_movieId: { userId: data.userId, movieId: data.movieId } },
+      data: { ...data },
+    });
+  }
+
+  public async deleteComment(
+    data: Omit<MovieComment, 'comment' | 'commentDate' | 'editDate'>,
+  ): Promise<void> {
+    await prisma.movieComment.delete({
+      where: { userId_movieId: { ...data } },
     });
   }
 }
