@@ -23,7 +23,7 @@ export default class MovieService {
     const movie = await this.movieRepository.getMovieById({ id: data.id });
 
     if (!movie)
-      await this.movieRepository.addMovie({
+      await this.movieRepository.createMovie({
         id: data.id,
         name: data.name,
       });
@@ -61,7 +61,7 @@ export default class MovieService {
     const movie = await this.movieRepository.getMovieById({ id: data.id });
 
     if (!movie)
-      await this.movieRepository.addMovie({
+      await this.movieRepository.createMovie({
         id: data.id,
         name: data.name,
       });

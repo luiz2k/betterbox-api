@@ -10,7 +10,7 @@ export default class MovieRepository {
     });
   }
 
-  public async addMovie(data: Movie): Promise<void> {
+  public async createMovie(data: Movie): Promise<void> {
     await prisma.movie.create({
       data: { ...data },
     });
