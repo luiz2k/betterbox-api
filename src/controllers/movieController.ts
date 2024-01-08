@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import MovieService from '../services/movieService';
 
-import type { MovieId } from './movieController.d';
+import type { Comment, MovieId } from './movieController.d';
 
 export default class MovieController {
   private movieService: MovieService;
@@ -139,6 +139,43 @@ export default class MovieController {
       return res
         .status(200)
         .send(`O filme ${formattedResponse.name} foi removido dos favoritos.`);
+    } catch (error) {
+      console.error(error);
+
+      return error instanceof Error
+        ? res.status(400).send({ error: 'Erro interno do servidor.' })
+        : res.status(400).send({ error: 'Erro interno do servidor.' });
+    }
+  }
+
+  public async createComment(req: Request, res: Response): Promise<Response> {
+    const { movieId, comment }: MovieId & Comment = req.body;
+    const userId: number = req.userId;
+
+    const authorization: string = process.env.TMDB_AUTHORIZATION;
+
+    try {
+      const response = await axios({
+        method: 'get',
+        url: `https://api.themoviedb.org/3/movie/${movieId}?language=pt-BR`,
+        headers: { Authorization: `Bearer ${authorization}` },
+      });
+
+      const formattedResponse = {
+        id: response.data.id,
+        name: response.data.title,
+      };
+
+      await this.movieService.createComment({
+        userId,
+        movieId: formattedResponse.id,
+        comment,
+        commentedAt: new Date(),
+      });
+
+      return res
+        .status(201)
+        .send(`Comentário adicionado ao filme ${formattedResponse.name}.`);
     } catch (error) {
       console.error(error);
 

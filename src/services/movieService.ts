@@ -7,6 +7,8 @@ import type {
   FavoriteMovie,
   AddToFavorite,
   RemoveFromFavorite,
+  CreateComment,
+  Comment,
 } from './movieService.d';
 
 export default class MovieService {
@@ -94,5 +96,17 @@ export default class MovieService {
       userId,
       movieId: data.id,
     });
+  }
+
+  public async createComment(data: CreateComment): Promise<void> {
+    const comment: Comment | null = await this.movieRepository.getCommentById({
+      userId: data.userId,
+      movieId: data.movieId,
+    });
+
+    if (comment)
+      throw new Error('Só é possível fazer um comentário por filme.');
+
+    await this.movieRepository.createComment({ ...data });
   }
 }

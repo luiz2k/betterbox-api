@@ -2,4 +2,8 @@ interface MovieId {
   movieId: number;
 }
 
-export { MovieId };
+interface Comment {
+  comment: string;
+}
+
+export { MovieId, Comment };

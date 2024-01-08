@@ -27,6 +27,21 @@ interface FavoriteMovie {
   movieId: number;
 }
 
+interface CreateComment {
+  userId: number;
+  movieId: number;
+  comment: string;
+  commentedAt: Date;
+}
+
+interface Comment {
+  userId: number;
+  movieId: number;
+  comment: string;
+  commentedAt: Date;
+  editedAt: Date | null;
+}
+
 export {
   AddToWatched,
   RemoveFromWatched,
@@ -34,4 +49,6 @@ export {
   AddToFavorite,
   RemoveFromFavorite,
   FavoriteMovie,
+  CreateComment,
+  Comment,
 };
