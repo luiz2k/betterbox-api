@@ -109,7 +109,7 @@ export default class MovieRepository {
   }
 
   public async deleteComment(
-    data: Omit<MovieComment, 'comment' | 'commentDate' | 'editDate'>,
+    data: Omit<MovieComment, 'comment' | 'commentedAt' | 'editedAt'>,
   ): Promise<void> {
     await prisma.movieComment.delete({
       where: { userId_movieId: { ...data } },
