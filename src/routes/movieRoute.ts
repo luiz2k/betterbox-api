@@ -41,5 +41,10 @@ export default class MovieRoute {
       '/editComment',
       this.movieController.editComment.bind(this.movieController),
     );
+
+    this.router.post(
+      '/deleteComment',
+      this.movieController.deleteComment.bind(this.movieController),
+    );
   }
 }
