@@ -32,7 +32,7 @@ export default class UserAuthentication {
       const existingFilm: Movie | null =
         await this.movieRepository.getMovieById({ id: MovieData.data.id });
 
-      if (existingFilm) next();
+      if (existingFilm) return next();
 
       await this.movieRepository.createMovie({
         id: MovieData.data.id,
