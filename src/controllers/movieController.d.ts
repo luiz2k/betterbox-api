@@ -1,9 +1,10 @@
-interface MovieId {
-  movieId: number;
-}
-
 interface Comment {
   comment: string;
 }
 
-export { MovieId, Comment };
+interface Movie {
+  id: number;
+  name: string;
+}
+
+export { Comment, Movie };

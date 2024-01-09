@@ -1,9 +1,8 @@
 import { Request, Response } from 'express';
-import axios from 'axios';
 
 import MovieService from '../services/movieService';
 
-import type { Comment, MovieId } from './movieController.d';
+import type { Comment, Movie } from './movieController.d';
 
 export default class MovieController {
   private movieService: MovieService;
@@ -13,28 +12,15 @@ export default class MovieController {
   }
 
   public async addToWatched(req: Request, res: Response): Promise<Response> {
-    const { movieId }: MovieId = req.body;
     const userId: number = req.userId;
-
-    const authorization: string = process.env.TMDB_AUTHORIZATION;
+    const movie: Movie = req.movie;
 
     try {
-      const response = await axios({
-        method: 'get',
-        url: `https://api.themoviedb.org/3/movie/${movieId}?language=pt-BR`,
-        headers: { Authorization: `Bearer ${authorization}` },
-      });
-
-      const responseFormat = {
-        id: response.data.id,
-        name: response.data.title,
-      };
-
-      await this.movieService.addToWatched(responseFormat, userId);
+      await this.movieService.addToWatched(movie, userId);
 
       return res
         .status(200)
-        .send(`O filme ${responseFormat.name} foi adicionado aos assistidos.`);
+        .send(`O filme ${movie.name} foi adicionado aos assistidos.`);
     } catch (error) {
       console.error(error);
 
@@ -48,28 +34,15 @@ export default class MovieController {
     req: Request,
     res: Response,
   ): Promise<Response> {
-    const { movieId }: MovieId = req.body;
     const userId: number = req.userId;
-
-    const authorization: string = process.env.TMDB_AUTHORIZATION;
+    const movie: Movie = req.movie;
 
     try {
-      const response = await axios({
-        method: 'get',
-        url: `https://api.themoviedb.org/3/movie/${movieId}?language=pt-BR`,
-        headers: { Authorization: `Bearer ${authorization}` },
-      });
-
-      const responseFormat = {
-        id: response.data.id,
-        name: response.data.title,
-      };
-
-      await this.movieService.removeFromWatched(responseFormat, userId);
+      await this.movieService.removeFromWatched(movie, userId);
 
       return res
         .status(200)
-        .send(`O filme ${responseFormat.name} foi removido de assistidos.`);
+        .send(`O filme ${movie.name} foi removido de assistidos.`);
     } catch (error) {
       console.error(error);
 
@@ -80,30 +53,15 @@ export default class MovieController {
   }
 
   public async addToFavorite(req: Request, res: Response): Promise<Response> {
-    const { movieId }: MovieId = req.body;
     const userId: number = req.userId;
-
-    const authorization: string = process.env.TMDB_AUTHORIZATION;
+    const movie: Movie = req.movie;
 
     try {
-      const response = await axios({
-        method: 'get',
-        url: `https://api.themoviedb.org/3/movie/${movieId}?language=pt-BR`,
-        headers: { Authorization: `Bearer ${authorization}` },
-      });
-
-      const formattedResponse = {
-        id: response.data.id,
-        name: response.data.title,
-      };
-
-      await this.movieService.addToFavorite(formattedResponse, userId);
+      await this.movieService.addToFavorite(movie, userId);
 
       return res
         .status(200)
-        .send(
-          `O filme ${formattedResponse.name} foi adicionado aos favoritos.`,
-        );
+        .send(`O filme ${movie.name} foi adicionado aos favoritos.`);
     } catch (error) {
       console.error(error);
 
@@ -117,28 +75,14 @@ export default class MovieController {
     req: Request,
     res: Response,
   ): Promise<Response> {
-    const { movieId }: MovieId = req.body;
     const userId: number = req.userId;
-
-    const authorization: string = process.env.TMDB_AUTHORIZATION;
-
+    const movie: Movie = req.movie;
     try {
-      const response = await axios({
-        method: 'get',
-        url: `https://api.themoviedb.org/3/movie/${movieId}?language=pt-BR`,
-        headers: { Authorization: `Bearer ${authorization}` },
-      });
-
-      const formattedResponse = {
-        id: response.data.id,
-        name: response.data.title,
-      };
-
-      await this.movieService.removeFromFavorite(formattedResponse, userId);
+      await this.movieService.removeFromFavorite(movie, userId);
 
       return res
         .status(200)
-        .send(`O filme ${formattedResponse.name} foi removido dos favoritos.`);
+        .send(`O filme ${movie.name} foi removido dos favoritos.`);
     } catch (error) {
       console.error(error);
 
@@ -149,33 +93,21 @@ export default class MovieController {
   }
 
   public async createComment(req: Request, res: Response): Promise<Response> {
-    const { movieId, comment }: MovieId & Comment = req.body;
+    const { comment }: Comment = req.body;
     const userId: number = req.userId;
-
-    const authorization: string = process.env.TMDB_AUTHORIZATION;
+    const movie: Movie = req.movie;
 
     try {
-      const response = await axios({
-        method: 'get',
-        url: `https://api.themoviedb.org/3/movie/${movieId}?language=pt-BR`,
-        headers: { Authorization: `Bearer ${authorization}` },
-      });
-
-      const formattedResponse = {
-        id: response.data.id,
-        name: response.data.title,
-      };
-
       await this.movieService.createComment({
         userId,
-        movieId: formattedResponse.id,
+        movieId: movie.id,
         comment,
         commentedAt: new Date(),
       });
 
       return res
         .status(201)
-        .send(`Comentário adicionado ao filme ${formattedResponse.name}.`);
+        .send(`Comentário adicionado ao filme ${movie.name}.`);
     } catch (error) {
       console.error(error);
 
@@ -186,31 +118,19 @@ export default class MovieController {
   }
 
   public async editComment(req: Request, res: Response): Promise<Response> {
-    const { movieId, comment }: MovieId & Comment = req.body;
+    const { comment }: Comment = req.body;
     const userId: number = req.userId;
+    const movie: Movie = req.movie;
 
     try {
-      const response = await axios({
-        method: 'get',
-        url: `https://api.themoviedb.org/3/movie/${movieId}?language=pt-BR`,
-        headers: { Authorization: `Bearer ${process.env.TMDB_AUTHORIZATION}` },
-      });
-
-      const formattedResponse = {
-        id: response.data.id,
-        name: response.data.title,
-      };
-
       await this.movieService.editComment({
         userId,
-        movieId: formattedResponse.id,
+        movieId: movie.id,
         comment,
         editedAt: new Date(),
       });
 
-      return res
-        .status(200)
-        .send(`Comentário editado no filme ${formattedResponse.name}.`);
+      return res.status(200).send(`Comentário editado no filme ${movie.name}.`);
     } catch (error) {
       console.error(error);
 

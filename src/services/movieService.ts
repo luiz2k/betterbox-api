@@ -20,14 +20,6 @@ export default class MovieService {
   }
 
   public async addToWatched(data: AddToWatched, userId: number): Promise<void> {
-    const movie = await this.movieRepository.getMovieById({ id: data.id });
-
-    if (!movie)
-      await this.movieRepository.createMovie({
-        id: data.id,
-        name: data.name,
-      });
-
     await this.movieRepository.addToWatched({
       userId,
       movieId: data.id,
@@ -58,21 +50,13 @@ export default class MovieService {
     data: AddToFavorite,
     userId: number,
   ): Promise<void> {
-    const movie = await this.movieRepository.getMovieById({ id: data.id });
-
-    if (!movie)
-      await this.movieRepository.createMovie({
-        id: data.id,
-        name: data.name,
-      });
-
     const favoriteMovie: FavoriteMovie | null =
       await this.movieRepository.getFavoriteMovie({
         userId,
         movieId: data.id,
       });
 
-    if (favoriteMovie) throw new Error('Esse filme já está favoritdo.');
+    if (favoriteMovie) throw new Error('Esse filme já está nos favoritos.');
 
     await this.movieRepository.addToFavorite({
       userId,
