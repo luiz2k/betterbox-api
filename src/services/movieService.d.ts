@@ -49,6 +49,11 @@ interface EditComment {
   editedAt: Date;
 }
 
+interface DeleteComment {
+  userId: number;
+  movieId: number;
+}
+
 export {
   AddToWatched,
   RemoveFromWatched,
@@ -59,4 +64,5 @@ export {
   CreateComment,
   Comment,
   EditComment,
+  DeleteComment,
 };

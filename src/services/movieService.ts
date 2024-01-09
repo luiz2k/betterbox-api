@@ -10,6 +10,7 @@ import type {
   CreateComment,
   Comment,
   EditComment,
+  DeleteComment,
 } from './movieService.d';
 
 export default class MovieService {
@@ -108,5 +109,17 @@ export default class MovieService {
       ...data,
       editedAt: comment.commentedAt,
     });
+  }
+
+  public async deleteComment(data: DeleteComment): Promise<void> {
+    const comment: Comment | null = await this.movieRepository.getCommentById({
+      userId: data.userId,
+      movieId: data.movieId,
+    });
+
+    if (!comment)
+      throw new Error('Impossível deletar um comentário que não existe.');
+
+    await this.movieRepository.deleteComment({ ...data });
   }
 }

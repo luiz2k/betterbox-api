@@ -139,4 +139,26 @@ export default class MovieController {
         : res.status(400).send({ error: 'Erro interno do servidor.' });
     }
   }
+
+  public async deleteComment(req: Request, res: Response): Promise<Response> {
+    const userId: number = req.userId;
+    const movie: Movie = req.movie;
+
+    try {
+      await this.movieService.deleteComment({
+        userId,
+        movieId: movie.id,
+      });
+
+      return res
+        .status(200)
+        .send(`Comentário removido do filme ${movie.name}.`);
+    } catch (error) {
+      console.error(error);
+
+      return error instanceof Error
+        ? res.status(400).send({ error: 'Erro interno do servidor.' })
+        : res.status(400).send({ error: 'Erro interno do servidor.' });
+    }
+  }
 }
