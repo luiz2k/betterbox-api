@@ -1,13 +1,17 @@
 import { Router } from 'express';
 import AuthController from '../controllers/authController';
+import UserAuthentication from '../middlewares/userAuthentication';
 
 export default class AuthRoute {
   public router: Router;
   private authController: AuthController;
 
+  private userAuthentication: UserAuthentication;
+
   constructor() {
     this.router = Router();
     this.authController = new AuthController();
+    this.userAuthentication = new UserAuthentication();
     this.routes();
   }
 
@@ -20,6 +24,13 @@ export default class AuthRoute {
     this.router.post(
       '/signup',
       this.authController.signUp.bind(this.authController),
+    );
+
+    this.router.use(this.userAuthentication.verifyAutentication);
+
+    this.router.post(
+      '/signout',
+      this.authController.signOut.bind(this.authController),
     );
   }
 }
