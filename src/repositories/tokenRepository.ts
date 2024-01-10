@@ -22,7 +22,7 @@ export default class TokenRepository {
   }
 
   public async removeRefreshToken(
-    data: Omit<RefreshToken, 'createdAt' | 'expiresAt'>,
+    data: Omit<RefreshToken, 'createdAt' | 'expiresAt' | 'userId'>,
   ): Promise<void> {
     await prisma.refreshToken.delete({
       where: { id: data.id, token: data.token },
