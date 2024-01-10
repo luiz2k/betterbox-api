@@ -6,7 +6,7 @@ import MovieRepository from '../repositories/movieRepository';
 
 import axios from 'axios';
 
-export default class UserAuthentication {
+export default class CreateMovie {
   private movieRepository: MovieRepository;
 
   constructor() {
