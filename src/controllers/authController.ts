@@ -73,4 +73,20 @@ export default class AuthController {
         : res.status(400).send({ error: 'Erro interno do servidor.' });
     }
   }
+
+  public async signOut(req: Request, res: Response) {
+    const { refreshToken } = req.body;
+
+    try {
+      await this.authService.signOut({ refreshToken });
+
+      return res.status(200).send('Usuário deslogado com sucesso.');
+    } catch (error) {
+      console.error(error);
+
+      return error instanceof Error
+        ? res.status(400).send({ error: 'Erro interno do servidor.' })
+        : res.status(400).send({ error: 'Erro interno do servidor.' });
+    }
+  }
 }

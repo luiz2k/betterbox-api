@@ -4,6 +4,10 @@ import { signInSchema, signUpSchema } from '../validations/authValidation';
 export type SignIn = z.infer<typeof signInSchema>;
 export type SignUp = z.infer<typeof signUpSchema>;
 
+export interface SignOut {
+  refreshToken: string;
+}
+
 export interface User {
   id: number;
   username: string;
@@ -23,4 +27,20 @@ export interface SignUpReturn {
 export interface SignInReturn {
   accessToken: string;
   refreshToken: string;
+}
+
+export interface RevokedToken {
+  id: number;
+  token: string;
+  revokedAt: Date;
+  expiresAt: Date;
+  userId: number;
+}
+
+export interface RefreshToken {
+  id: number;
+  token: string;
+  createdAt: Date;
+  expiresAt: Date;
+  userId: number;
 }

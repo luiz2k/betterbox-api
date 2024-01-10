@@ -3,8 +3,11 @@ import type {
   CreateUser,
   SignIn,
   SignUp,
+  SignOut,
   SignInReturn,
   SignUpReturn,
+  RevokedToken,
+  RefreshToken,
 } from './authService.d';
 
 import AuthRepository from '../repositories/authRepository';
@@ -110,5 +113,29 @@ export default class AuthService {
       accessToken,
       refreshToken,
     };
+  }
+
+  public async signOut(data: SignOut): Promise<void> {
+    const revokedToken: RevokedToken | null =
+      await this.tokenRepostitory.getRevokedToken({
+        token: data.refreshToken,
+      });
+
+    if (revokedToken) throw new Error('O token informado está revogado.');
+
+    const refreshToken: RefreshToken | null =
+      await this.tokenRepostitory.getRefreshToken({ token: data.refreshToken });
+
+    if (!refreshToken) throw new Error('Refresh token inválido.');
+
+    await this.tokenRepostitory.removeRefreshToken({
+      id: refreshToken.id,
+      token: refreshToken.token,
+    });
+
+    await this.tokenRepostitory.addRevokedToken({
+      ...refreshToken,
+      revokedAt: new Date(),
+    });
   }
 }
