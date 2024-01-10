@@ -26,7 +26,7 @@ export default class AuthRoute {
       this.authController.signUp.bind(this.authController),
     );
 
-    this.router.use(this.userAuthentication.verifyAutentication);
+    this.router.use(this.userAuthentication.verifyAuthentication);
 
     this.router.post(
       '/signout',

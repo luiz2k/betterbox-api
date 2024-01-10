@@ -27,7 +27,7 @@ export default class Routes {
   private routes(): void {
     this.router.use('/auth', this.authRoute.router);
 
-    this.router.use(this.userAuthentication.verifyAutentication);
+    this.router.use(this.userAuthentication.verifyAuthentication);
     this.router.use(this.createMovie.verifyMovie);
 
     this.router.use('/movie', this.movieRoute.router);

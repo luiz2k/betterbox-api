@@ -14,7 +14,7 @@ export default class UserAuthentication {
     this.tokenRepository = new TokenRepository();
   }
 
-  public verifyAutentication = async (
+  public verifyAuthentication = async (
     req: Request,
     res: Response,
     next: NextFunction,
