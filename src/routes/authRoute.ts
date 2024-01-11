@@ -26,6 +26,11 @@ export default class AuthRoute {
       this.authController.signUp.bind(this.authController),
     );
 
+    this.router.post(
+      '/refreshToken',
+      this.authController.refreshToken.bind(this.authController),
+    );
+
     this.router.use(this.userAuthentication.verifyAuthentication);
 
     this.router.post(
