@@ -8,7 +8,12 @@ export interface RefreshToken {
   refreshToken: string;
 }
 
-export type SignOut = RefreshToken;
+interface AccessAndRefreshToken {
+  accessToken: string;
+  refreshToken: string;
+}
+
+type SignOut = RefreshToken;
 
 export interface User {
   id: number;
@@ -21,20 +26,13 @@ export interface CreateUser {
   id: number;
 }
 
-export interface SignInReturn {
-  accessToken: string;
-  refreshToken: string;
-}
+export type GenerateTokensReturn = AccessAndRefreshToken;
 
-export interface SignUpReturn {
-  accessToken: string;
-  refreshToken: string;
-}
+export type SignInReturn = AccessAndRefreshToken;
 
-export interface RefreshTokenReturn {
-  accessToken: string;
-  refreshToken: string;
-}
+export type SignUpReturn = AccessAndRefreshToken;
+
+export type RefreshTokenReturn = AccessAndRefreshToken;
 
 export interface GetRevokedToken {
   id: number;

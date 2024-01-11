@@ -3,6 +3,7 @@ import type {
   CreateUser,
   SignIn,
   SignUp,
+  GenerateTokensReturn,
   RefreshToken,
   SignOut,
   SignInReturn,
@@ -28,10 +29,8 @@ export default class AuthService {
     this.tokenRepostitory = new TokenRepository();
   }
 
-  // Gera os tokens de acesso e refresh, e adiciona o refresh token no banco de dados.
-  private async generateTokens(
-    userId: number,
-  ): Promise<{ accessToken: string; refreshToken: string }> {
+  // Gera os tokens de acesso e refresh, e adiciona o refresh token ao banco de dados.
+  private async generateTokens(userId: number): Promise<GenerateTokensReturn> {
     const JWT_SECRET: string = process.env.JWT_SECRET;
 
     const accessToken: string = jwt.sign({ userId }, JWT_SECRET, {
