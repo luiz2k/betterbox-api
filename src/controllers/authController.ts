@@ -3,10 +3,12 @@ import { Request, Response } from 'express';
 import type {
   SignIn,
   SignUp,
+  RefreshTokenBody,
   SignInSafeParse,
   SignUpSafeParse,
   SignInResponse,
   SignUpResponse,
+  RefreshTokenResponse,
 } from './authController.d';
 
 import { signInSchema, signUpSchema } from '../validations/authValidation';
@@ -65,6 +67,23 @@ export default class AuthController {
       });
 
       return res.status(201).send(signUpResponse);
+    } catch (error) {
+      console.error(error);
+
+      return error instanceof Error
+        ? res.status(400).send({ error: 'Erro interno do servidor.' })
+        : res.status(400).send({ error: 'Erro interno do servidor.' });
+    }
+  }
+
+  public async refreshToken(req: Request, res: Response) {
+    const { refreshToken }: RefreshTokenBody = req.body;
+
+    try {
+      const refreshTokenResponse: RefreshTokenResponse =
+        await this.authService.refreshToken({ refreshToken });
+
+      return res.status(200).send(refreshTokenResponse);
     } catch (error) {
       console.error(error);
 
