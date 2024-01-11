@@ -107,7 +107,8 @@ export default class AuthService {
     const getRefreshToken: GetRefreshToken | null =
       await this.tokenRepostitory.getRefreshToken({ token: data.refreshToken });
 
-    if (!getRefreshToken) throw new Error('Refresh token não encontrado.');
+    if (!getRefreshToken)
+      throw new Error('Refresh token não encontrado no banco de dados.');
 
     await this.tokenRepostitory.addRevokedToken({
       ...getRefreshToken,
@@ -137,7 +138,8 @@ export default class AuthService {
     const getRefreshToken: GetRefreshToken | null =
       await this.tokenRepostitory.getRefreshToken({ token: data.refreshToken });
 
-    if (!getRefreshToken) throw new Error('Refresh token inválido.');
+    if (!getRefreshToken)
+      throw new Error('Refresh token não encontrado no banco de dados.');
 
     await this.tokenRepostitory.addRevokedToken({
       ...getRefreshToken,
