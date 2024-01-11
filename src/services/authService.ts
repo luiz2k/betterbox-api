@@ -28,6 +28,36 @@ export default class AuthService {
     this.tokenRepostitory = new TokenRepository();
   }
 
+  // Gera os tokens de acesso e refresh, e adiciona o refresh token no banco de dados.
+  private async generateTokens(
+    userId: number,
+  ): Promise<{ accessToken: string; refreshToken: string }> {
+    const JWT_SECRET: string = process.env.JWT_SECRET;
+
+    const accessToken: string = jwt.sign({ userId }, JWT_SECRET, {
+      expiresIn: '1h',
+    });
+    const refreshToken: string = jwt.sign({ userId }, JWT_SECRET, {
+      expiresIn: '7d',
+    });
+
+    const createdAt: Date = new Date();
+    const expiresAt: Date = new Date(createdAt);
+    expiresAt.setDate(createdAt.getDate() + 7);
+
+    await this.tokenRepostitory.addRefreshToken({
+      token: refreshToken,
+      createdAt: createdAt,
+      expiresAt: expiresAt,
+      userId,
+    });
+
+    return {
+      accessToken,
+      refreshToken,
+    };
+  }
+
   public async signIn(data: SignIn): Promise<SignInReturn> {
     const user: User | null = await this.authRepostitory.getUserByEmail({
       email: data.email,
@@ -42,30 +72,9 @@ export default class AuthService {
 
     if (!comparePasswords) throw new Error('Senha inválida.');
 
-    const JWT_SECRET: string = process.env.JWT_SECRET;
+    const tokens = await this.generateTokens(user.id);
 
-    const accessToken: string = jwt.sign({ userId: user.id }, JWT_SECRET, {
-      expiresIn: '1h',
-    });
-    const refreshToken: string = jwt.sign({ userId: user.id }, JWT_SECRET, {
-      expiresIn: '7d',
-    });
-
-    const createdAt: Date = new Date();
-    const expiresAt: Date = new Date(createdAt);
-    expiresAt.setDate(createdAt.getDate() + 7);
-
-    await this.tokenRepostitory.addRefreshToken({
-      token: refreshToken,
-      createdAt: createdAt,
-      expiresAt: expiresAt,
-      userId: user.id,
-    });
-
-    return {
-      accessToken,
-      refreshToken,
-    };
+    return tokens;
   }
 
   public async signUp(data: SignUp): Promise<SignUpReturn> {
@@ -84,38 +93,9 @@ export default class AuthService {
       profile: { create: {} },
     });
 
-    const JWT_SECRET: string = process.env.JWT_SECRET;
+    const tokens = await this.generateTokens(createUser.id);
 
-    const accessToken: string = jwt.sign(
-      { userId: createUser.id },
-      JWT_SECRET,
-      {
-        expiresIn: '1h',
-      },
-    );
-    const refreshToken: string = jwt.sign(
-      { userId: createUser.id },
-      JWT_SECRET,
-      {
-        expiresIn: '7d',
-      },
-    );
-
-    const createdAt: Date = new Date();
-    const expiresAt: Date = new Date(createdAt);
-    expiresAt.setDate(createdAt.getDate() + 7);
-
-    await this.tokenRepostitory.addRefreshToken({
-      token: refreshToken,
-      createdAt: createdAt,
-      expiresAt: expiresAt,
-      userId: createUser.id,
-    });
-
-    return {
-      accessToken,
-      refreshToken,
-    };
+    return tokens;
   }
 
   public async refreshToken(data: RefreshToken): Promise<RefreshTokenReturn> {
@@ -130,10 +110,8 @@ export default class AuthService {
     if (!getRefreshToken) throw new Error('Refresh token não encontrado.');
 
     await this.tokenRepostitory.addRevokedToken({
-      token: getRefreshToken.token,
+      ...getRefreshToken,
       revokedAt: new Date(),
-      expiresAt: getRefreshToken.expiresAt,
-      userId: getRefreshToken.userId,
     });
 
     await this.tokenRepostitory.removeRefreshToken({
@@ -145,38 +123,14 @@ export default class AuthService {
 
     const decoded = jwt.verify(data.refreshToken, JWT_SECRET) as Decoded;
 
-    const accessToken: string = jwt.sign(
-      { userId: decoded.userId },
-      JWT_SECRET,
-      { expiresIn: '1h' },
-    );
-    const refreshToken: string = jwt.sign(
-      { userId: decoded.userId },
-      JWT_SECRET,
-      {
-        expiresIn: '7d',
-      },
-    );
+    const tokens = await this.generateTokens(decoded.userId);
 
-    const createdAt: Date = new Date();
-    const expiresAt: Date = new Date(createdAt);
-    expiresAt.setDate(createdAt.getDate() + 7);
-
-    await this.tokenRepostitory.addRefreshToken({
-      token: refreshToken,
-      createdAt: createdAt,
-      expiresAt: expiresAt,
-      userId: decoded.userId,
-    });
-
-    return { accessToken, refreshToken };
+    return tokens;
   }
 
   public async signOut(data: SignOut): Promise<void> {
     const getRevokedToken: GetRevokedToken | null =
-      await this.tokenRepostitory.getRevokedToken({
-        token: data.refreshToken,
-      });
+      await this.tokenRepostitory.getRevokedToken({ token: data.refreshToken });
 
     if (getRevokedToken) throw new Error('O token informado está revogado.');
 
@@ -185,14 +139,14 @@ export default class AuthService {
 
     if (!getRefreshToken) throw new Error('Refresh token inválido.');
 
-    await this.tokenRepostitory.removeRefreshToken({
-      id: getRefreshToken.id,
-      token: getRefreshToken.token,
-    });
-
     await this.tokenRepostitory.addRevokedToken({
       ...getRefreshToken,
       revokedAt: new Date(),
+    });
+
+    await this.tokenRepostitory.removeRefreshToken({
+      id: getRefreshToken.id,
+      token: getRefreshToken.token,
     });
   }
 }
