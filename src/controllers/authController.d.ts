@@ -1,12 +1,14 @@
 import { z } from 'zod';
 import { signUpSchema, signInSchema } from '../validations/authValidation';
 
-export type SignUp = z.infer<typeof signUpSchema>;
-export type SignIn = z.infer<typeof signInSchema>;
+export type SignUpBody = z.infer<typeof signUpSchema>;
+export type SignInBody = z.infer<typeof signInSchema>;
 
-export interface RefreshTokenBody {
-  refreshToken: string;
-}
+type refreshToken = { refreshToken: string };
+
+export type RefreshTokenBody = refreshToken;
+
+export type SignOutBody = refreshToken;
 
 export type SignUpSafeParse = SafeParseReturnType<
   {

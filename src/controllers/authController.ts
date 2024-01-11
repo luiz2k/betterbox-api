@@ -1,9 +1,10 @@
 import { Request, Response } from 'express';
 
 import type {
-  SignIn,
-  SignUp,
+  SignInBody,
+  SignUpBody,
   RefreshTokenBody,
+  SignOutBody,
   SignInSafeParse,
   SignUpSafeParse,
   SignInResponse,
@@ -22,8 +23,8 @@ export default class AuthController {
     this.authService = new AuthService();
   }
 
-  public async signIn(req: Request, res: Response) {
-    const { email, password }: SignIn = req.body;
+  public async signIn(req: Request, res: Response): Promise<Response> {
+    const { email, password }: SignInBody = req.body;
 
     try {
       const validation: SignInSafeParse = signInSchema.safeParse({
@@ -48,8 +49,8 @@ export default class AuthController {
     }
   }
 
-  public async signUp(req: Request, res: Response) {
-    const { username, email, password }: SignUp = req.body;
+  public async signUp(req: Request, res: Response): Promise<Response> {
+    const { username, email, password }: SignUpBody = req.body;
 
     try {
       const validation: SignUpSafeParse = signUpSchema.safeParse({
@@ -76,7 +77,7 @@ export default class AuthController {
     }
   }
 
-  public async refreshToken(req: Request, res: Response) {
+  public async refreshToken(req: Request, res: Response): Promise<Response> {
     const { refreshToken }: RefreshTokenBody = req.body;
 
     try {
@@ -93,8 +94,8 @@ export default class AuthController {
     }
   }
 
-  public async signOut(req: Request, res: Response) {
-    const { refreshToken } = req.body;
+  public async signOut(req: Request, res: Response): Promise<Response> {
+    const { refreshToken }: SignOutBody = req.body;
 
     try {
       await this.authService.signOut({ refreshToken });
