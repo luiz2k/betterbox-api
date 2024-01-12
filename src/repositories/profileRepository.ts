@@ -9,17 +9,10 @@ export default class ProfileRepository {
     return await prisma.profile.findUnique({ where: { userId: data.userId } });
   }
 
-  async changePicture(data: Omit<Profile, 'bio'>): Promise<void> {
+  async updateProfile(data: Profile): Promise<void> {
     await prisma.profile.update({
       where: { userId: data.userId },
-      data: { picture: data.picture },
-    });
-  }
-
-  async changeBio(data: Omit<Profile, 'picture'>): Promise<void> {
-    await prisma.profile.update({
-      where: { userId: data.userId },
-      data: { bio: data.bio },
+      data: { picture: data.picture, bio: data.bio },
     });
   }
 }
