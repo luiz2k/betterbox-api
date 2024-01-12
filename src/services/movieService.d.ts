@@ -1,10 +1,12 @@
 interface AddToWatched {
   id: number;
   name: string;
+  userId: number;
 }
 
 interface RemoveFromWatched {
   id: number;
+  userId: number;
 }
 
 interface MovieWatched {
@@ -16,10 +18,12 @@ interface MovieWatched {
 interface AddToFavorite {
   id: number;
   name: string;
+  userId: number;
 }
 
 interface RemoveFromFavorite {
   id: number;
+  userId: number;
 }
 
 interface FavoriteMovie {

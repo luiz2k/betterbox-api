@@ -20,21 +20,18 @@ export default class MovieService {
     this.movieRepository = new MovieRepository();
   }
 
-  public async addToWatched(data: AddToWatched, userId: number): Promise<void> {
+  public async addToWatched(data: AddToWatched): Promise<void> {
     await this.movieRepository.addToWatched({
-      userId,
+      userId: data.userId,
       movieId: data.id,
       watchedDate: new Date(),
     });
   }
 
-  public async removeFromWatched(
-    data: RemoveFromWatched,
-    userId: number,
-  ): Promise<void> {
+  public async removeFromWatched(data: RemoveFromWatched): Promise<void> {
     const movieWatched: MovieWatched | null =
       await this.movieRepository.getMovieWatched({
-        userId,
+        userId: data.userId,
         movieId: data.id,
       });
 
@@ -42,36 +39,30 @@ export default class MovieService {
       throw new Error('Impossível remover um filme que nunca foi assistido.');
 
     await this.movieRepository.removeFromWatched({
-      userId,
+      userId: data.userId,
       movieId: data.id,
     });
   }
 
-  public async addToFavorite(
-    data: AddToFavorite,
-    userId: number,
-  ): Promise<void> {
+  public async addToFavorite(data: AddToFavorite): Promise<void> {
     const favoriteMovie: FavoriteMovie | null =
       await this.movieRepository.getFavoriteMovie({
-        userId,
+        userId: data.userId,
         movieId: data.id,
       });
 
     if (favoriteMovie) throw new Error('Esse filme já está nos favoritos.');
 
     await this.movieRepository.addToFavorite({
-      userId,
+      userId: data.userId,
       movieId: data.id,
     });
   }
 
-  public async removeFromFavorite(
-    data: RemoveFromFavorite,
-    userId: number,
-  ): Promise<void> {
+  public async removeFromFavorite(data: RemoveFromFavorite): Promise<void> {
     const favoriteMovie: FavoriteMovie | null =
       await this.movieRepository.getFavoriteMovie({
-        userId,
+        userId: data.userId,
         movieId: data.id,
       });
 
@@ -79,7 +70,7 @@ export default class MovieService {
       throw new Error('Impossível remover um filme que nunca foi favoritado.');
 
     await this.movieRepository.removeFromFavorite({
-      userId,
+      userId: data.userId,
       movieId: data.id,
     });
   }

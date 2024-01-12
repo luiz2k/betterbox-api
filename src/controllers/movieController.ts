@@ -16,7 +16,7 @@ export default class MovieController {
     const movie: Movie = req.movie;
 
     try {
-      await this.movieService.addToWatched(movie, userId);
+      await this.movieService.addToWatched({ ...movie, userId });
 
       return res
         .status(200)
@@ -38,7 +38,7 @@ export default class MovieController {
     const movie: Movie = req.movie;
 
     try {
-      await this.movieService.removeFromWatched(movie, userId);
+      await this.movieService.removeFromWatched({ ...movie, userId });
 
       return res
         .status(200)
@@ -57,7 +57,7 @@ export default class MovieController {
     const movie: Movie = req.movie;
 
     try {
-      await this.movieService.addToFavorite(movie, userId);
+      await this.movieService.addToFavorite({ ...movie, userId });
 
       return res
         .status(200)
@@ -78,7 +78,7 @@ export default class MovieController {
     const userId: number = req.userId;
     const movie: Movie = req.movie;
     try {
-      await this.movieService.removeFromFavorite(movie, userId);
+      await this.movieService.removeFromFavorite({ ...movie, userId });
 
       return res
         .status(200)
