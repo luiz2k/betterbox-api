@@ -16,5 +16,10 @@ export default class ProfileRoute {
       '/getProfile',
       this.ProfileController.getProfile.bind(this.ProfileController),
     );
+
+    this.router.patch(
+      '/updateProfile',
+      this.ProfileController.updateProfile.bind(this.ProfileController),
+    );
   }
 }
