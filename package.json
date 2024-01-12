@@ -1,45 +1,104 @@
 {
-  "name": "betterbox",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "vitest",
-    "test:cov": "vitest run --coverage",
-    "dev": "tsx watch src/server.ts",
-    "build": "npx tsc",
-    "start": "node build/server.js"
+  "aboutMe": {
+    "photograph": "https://avatars.githubusercontent.com/u/104397057?v=4",
+    "description": "Sou estudante de Análise e Desenvolvimento de Sistemas, e estou em busca da minha primeira oportunidade como desenvolvedor front-end. Sou uma pessoa focado, prestativo e tenho comprometimento com o trabalho. Gosto bastante de estudar e aprender sobre novas tecnologias, além de estar sempre atualizado com as novidades.",
+    "name": "Luiz Teles",
+    "age": 23,
+    "location": "Mauá, SP",
+    "phone": "(11) 96434-9354"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@types/bcryptjs": "^2.4.6",
-    "@types/express": "^4.17.21",
-    "@types/jsonwebtoken": "^9.0.5",
-    "@types/node": "^20.10.5",
-    "@types/supertest": "^2.0.16",
-    "@typescript-eslint/eslint-plugin": "^6.14.0",
-    "@typescript-eslint/parser": "^6.14.0",
-    "@vitest/coverage-v8": "^1.1.0",
-    "eslint": "^8.56.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-prettier": "^5.0.1",
-    "prettier": "^3.1.1",
-    "prisma": "^5.7.0",
-    "supertest": "^6.3.3",
-    "tsx": "^4.6.2",
-    "typescript": "^5.3.3",
-    "vitest": "^1.0.4"
+  "skills": {
+    "frontEnd": [
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "TypeScript",
+      "React.JS",
+      "Next.JS",
+      "Bootstrap",
+      "Sass",
+      "Styled Components",
+      "Tailwind CSS"
+    ],
+    "backEnd": ["Node.JS", "Express.JS", "MySQL", "MongoDB", "Prisma"]
   },
-  "dependencies": {
-    "@prisma/client": "^5.7.0",
-    "axios": "^1.6.4",
-    "bcryptjs": "^2.4.3",
-    "cors": "^2.8.5",
-    "dotenv": "^16.3.1",
-    "express": "^4.18.2",
-    "jsonwebtoken": "^9.0.2",
-    "zod": "^3.22.4"
-  }
+  "projects": [
+    {
+      "title": "Betterbox (Em andamento)",
+      "image": "https://i.imgur.com/gKybG6Q.png",
+      "description": "Projeto semelhante ao Catalogo de Filmes feito no passado, porém full stack.",
+      "technologies": [
+        "Next.JS",
+        "Tailwind CSS",
+        "TypeScript",
+        "Node.JS",
+        "Express.JS",
+        "MySQL",
+        "Prisma"
+      ],
+      "projectLink": "#",
+      "sourceCodeLink": "https://github.com/luiz2k/betterbox"
+    },
+    {
+      "title": "Lista de Tarefas",
+      "image": "https://i.imgur.com/WOqzgNc.png",
+      "description": "Meu primeiro projeto full stack, onde eu refaço um dos meus primeiros projetos, Lista de Tarefas. A ideia desse projeto é manter todas as anotações do usuário em um banco de dados, evitando assim possíveis perda das anotações. Nesse projeto criado um sistema de login e registro, onde cada usuário poderá gerenciar suas próprias anotações. O usuário quando logado poderá acessar o seu perfil e alterar todos os seus dados, ou até mesmo excluir a sua conta.",
+      "technologies": [
+        "Next.JS",
+        "Tailwind CSS",
+        "TypeScript",
+        "Node.JS",
+        "Express.JS",
+        "MongoDB"
+      ],
+      "projectLink": "https://listadetarefas-luiz2k.vercel.app/",
+      "sourceCodeLink": "https://github.com/luiz2k/lista-de-tarefas__front-end"
+    },
+    {
+      "title": "Carrinho de Compras",
+      "image": "https://i.imgur.com/sizAa81.png",
+      "description": "Projeto de um Carrinho de Compras feito no NextJS com TypeScript, consumindo a API do Mercado Livre. Na página inicial exibe todos os produtos disponíveis para adicionar ao carrinho. Após a adição de um produto, um contador aparece no canto superior direito, mostrando a quantidade de itens no carrinho. Na página do carrinho, é apresentado um resumo dos produtos adicionados, incluindo a quantidade e o preço total. Para compartilhar os dados entre a página inicial e a do carrinho, a Context API foi utilizada. O layout da aplicação foi construído com o Sass e CSS Modules.",
+      "technologies": ["HTML", "CSS", "TypeScript", "Next.JS", "Sass"],
+      "projectLink": "https://carrinhodecompras-luiz2k.vercel.app/",
+      "sourceCodeLink": "https://github.com/luiz2k/carrinho-de-compras"
+    },
+    {
+      "title": "Catalogo de Filmes",
+      "image": "https://i.imgur.com/NVHDdb2.png",
+      "description": "Projeto de um Catálogo de Filmes que foi feito consumindo a API de filmes TheMovieDB, para a criação desse projeto foi utilizado a biblioteca React. No header da página foi adiciona um botão que altera o tema do site entre dark e light, e também uma barra de pesquisa que você pode pesquisar um filme de sua preferência. Já no corpo da página temos dois carrosséis com categorias de filmes diferentes, para fazer esse carrossel foi utilizado o Splide. Sempre que houver alguma interação com os cards você será direcionado para uma página que mostra as informações do card do filme interagido.",
+      "technologies": ["HTML", "CSS", "JavaScript", "React.JS", "Tailwind CSS"],
+      "projectLink": "https://catalogodefilmes-luiz2k.vercel.app/",
+      "sourceCodeLink": "https://github.com/luiz2k/catalogo-de-filmes"
+    },
+    {
+      "title": "Pokédex",
+      "image": "https://i.imgur.com/sVgqQzP.png",
+      "description": "Projeto de uma Pokédex feita consumindo a PokeAPI, para o consumo dessa API foi utilizado o Fetch API. Sempre que houver alguma interação com os card dos Pokémons, irá abrir um modal mostrando mais informações sobre o Pokémon do card interagido, se clicar na estrelinha que está no canto inferior direito da foto do Pokémon no modal, o Pokémon irá mudar de versão. Também é possível buscar um Pokémon especifico pelo seu NOME ou ID na barra de pesquisa que fica no cabeçalho da página. Os Pokémon também podem ser filtrado pelo seu tipo, basta clicar no botão do tipo do Pokémon que aparece logo no início da página.",
+      "technologies": ["HTML", "CSS", "JavaScript"],
+      "projectLink": "https://pokedex-luiz2k.vercel.app/",
+      "sourceCodeLink": "https://github.com/luiz2k/pokedex"
+    }
+  ],
+  "contacts": [
+    {
+      "link": false,
+      "category": "E-Mail",
+      "categoryInfo": "luizteles934@gmail.com"
+    },
+    {
+      "link": false,
+      "category": "Telefone",
+      "categoryInfo": "(11) 96434-9354"
+    },
+    {
+      "link": true,
+      "category": "LinkedIn",
+      "categoryInfo": "https://www.linkedin.com/in/luiz2k/"
+    },
+    {
+      "link": true,
+      "category": "GitHub",
+      "categoryInfo": "https://github.com/luiz2k"
+    }
+  ]
 }
