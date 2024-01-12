@@ -1,6 +1,10 @@
 import ProfileRepository from '../repositories/profileRepository';
 
-import type { Profile, GetProfile } from './profileService.d';
+import type {
+  GetProfile,
+  GetProfileReturn,
+  UpdateProfile,
+} from './profileService.d';
 
 export default class ProfileService {
   private profileRepository: ProfileRepository;
@@ -9,12 +13,21 @@ export default class ProfileService {
     this.profileRepository = new ProfileRepository();
   }
 
-  async getProfile(data: Profile): Promise<GetProfile> {
-    const getProfile: GetProfile | null =
-      await this.profileRepository.getProfileByUserId({ ...data });
+  async getProfile(data: GetProfile): Promise<GetProfileReturn> {
+    const getProfile: GetProfileReturn | null =
+      await this.profileRepository.getProfileByUserId({ userId: data.userId });
 
     if (!getProfile) throw new Error('Perfil do usuário não encontrado.');
 
     return getProfile;
+  }
+
+  async updateProfile(data: UpdateProfile): Promise<void> {
+    const getProfile: GetProfileReturn | null =
+      await this.profileRepository.getProfileByUserId({ userId: data.userId });
+
+    if (!getProfile) throw new Error('Perfil do usuário não encontrado.');
+
+    await this.profileRepository.updateProfile({ ...data });
   }
 }

@@ -3,3 +3,8 @@ export interface GetProfile {
   picture: string | null;
   bio: string | null;
 }
+
+export interface UpdateProfileBody {
+  picture: string | null;
+  bio: string | null;
+}
