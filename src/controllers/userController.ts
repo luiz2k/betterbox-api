@@ -4,6 +4,8 @@ import UserService from '../services/userService';
 
 import { ChangeUsernameBody, GetUser } from './userController.d';
 
+import { changeUsernameSchema } from '../validations/userValidation';
+
 export default class UserController {
   private userService: UserService;
 
@@ -34,6 +36,10 @@ export default class UserController {
     const userId: number = req.userId;
 
     try {
+      const validation = changeUsernameSchema.safeParse({ newUsername });
+
+      if (!validation.success) throw new Error(validation.error.message);
+
       await this.userService.changeUsername({
         id: userId,
         username: newUsername,
