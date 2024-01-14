@@ -27,4 +27,17 @@ export default class UserService {
       bio: getUser.bio,
     };
   }
+
+  async changeUsername(data: ChangeUsername): Promise<void> {
+    const getUser: GetUserByIdReturn | null =
+      await this.userRepository.getUserDataById({ id: data.id });
+
+    if (getUser?.username === data.username)
+      throw new Error('Impossível usar o mesmo nome de usuário.');
+
+    await this.userRepository.updateUserData({
+      id: data.id,
+      username: data.username,
+    });
+  }
 }

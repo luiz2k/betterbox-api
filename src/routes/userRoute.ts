@@ -16,5 +16,10 @@ export default class UserRoute {
       '/getUserById',
       this.UserController.getUserById.bind(this.UserController),
     );
+
+    this.router.patch(
+      '/changeUsername',
+      this.UserController.changeUsername.bind(this.UserController),
+    );
   }
 }

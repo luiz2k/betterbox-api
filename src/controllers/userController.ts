@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 
 import UserService from '../services/userService';
 
-import { GetUser } from './userController.d';
+import { ChangeUsernameBody, GetUser } from './userController.d';
 
 export default class UserController {
   private userService: UserService;
@@ -20,6 +20,28 @@ export default class UserController {
       });
 
       return res.status(200).send(getUser);
+    } catch (error) {
+      console.error(error);
+
+      return error instanceof Error
+        ? res.status(400).send({ error: 'Erro interno do servidor.' })
+        : res.status(400).send({ error: 'Erro interno do servidor.' });
+    }
+  }
+
+  async changeUsername(req: Request, res: Response): Promise<Response> {
+    const { newUsername }: ChangeUsernameBody = req.body;
+    const userId: number = req.userId;
+
+    try {
+      await this.userService.changeUsername({
+        id: userId,
+        username: newUsername,
+      });
+
+      return res
+        .status(200)
+        .send(`Nome de usuário alterado para ${newUsername}.`);
     } catch (error) {
       console.error(error);
 
