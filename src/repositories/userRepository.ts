@@ -1,14 +1,15 @@
 import prisma from '../database/database';
 
-import type { GetUserByIdReturn, User } from './userRepository.d';
+import type { UpdateUserData, User } from './userRepository.d';
 
 export default class UserRepository {
-  async getUserById(
+  async getUserDataById(
     data: Omit<User, 'username' | 'email' | 'password' | 'picture' | 'bio'>,
-  ): Promise<GetUserByIdReturn | null> {
-    return await prisma.user.findUnique({
-      where: { id: data.id },
-      select: { username: true, picture: true, bio: true },
-    });
+  ): Promise<User | null> {
+    return await prisma.user.findUnique({ where: { id: data.id } });
+  }
+
+  async updateUserData(data: UpdateUserData): Promise<void> {
+    await prisma.user.update({ where: { id: data.id }, data: { ...data } });
   }
 }
