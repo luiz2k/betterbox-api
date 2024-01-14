@@ -1,17 +1,24 @@
 import { Request, Response, NextFunction } from 'express';
+
 import type {
   RefreshToken,
   RevokedToken,
   Decoded,
+  UserData,
 } from './userAuthentication.d';
+
 import TokenRepository from '../repositories/tokenRepository';
+import UserRepository from '../repositories/userRepository';
+
 import jwt from 'jsonwebtoken';
 
 export default class UserAuthentication {
   private tokenRepository: TokenRepository;
+  private userRepository: UserRepository;
 
   constructor() {
     this.tokenRepository = new TokenRepository();
+    this.userRepository = new UserRepository();
   }
 
   public verifyAuthentication = async (
@@ -52,6 +59,13 @@ export default class UserAuthentication {
       const JWT_SECRET: string = process.env.JWT_SECRET;
 
       const decoded = jwt.verify(token, JWT_SECRET) as Decoded;
+
+      const userData: UserData | null =
+        await this.userRepository.getUserDataById({
+          id: decoded.userId,
+        });
+
+      if (!userData) throw new Error('Usuário não encontrado.');
 
       req.userId = decoded.userId;
 
