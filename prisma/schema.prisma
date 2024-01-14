@@ -10,14 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model profile {
-  user   user @relation(fields: [userId], references: [id])
-  userId Int  @id
-
-  picture String?
-  bio     String? @db.VarChar(100)
-}
-
 model refreshToken {
   id        Int      @id @default(autoincrement())
   token     String
@@ -44,7 +36,9 @@ model user {
   email    String @unique @db.VarChar(254)
   password String @db.Char(60)
 
-  profile      profile?
+  picture String?
+  bio     String? @db.VarChar(100)
+
   refreshToken refreshToken[]
   revokedToken revokedToken[]
 
@@ -105,8 +99,8 @@ model movieComment {
   movie   movie @relation(fields: [movieId], references: [id])
   movieId Int
 
-  comment     String   @db.VarChar(100)
-  commentedAt DateTime @default(now())
+  comment     String    @db.VarChar(100)
+  commentedAt DateTime  @default(now())
   editedAt    DateTime?
 
   @@id([userId, movieId])
@@ -118,8 +112,8 @@ model serieComment {
   serie   serie @relation(fields: [serieId], references: [id])
   serieId Int
 
-  comment     String   @db.VarChar(100)
-  commentedAt DateTime @default(now())
+  comment     String    @db.VarChar(100)
+  commentedAt DateTime  @default(now())
   editedAt    DateTime?
 
   @@id([userId, serieId])
