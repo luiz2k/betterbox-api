@@ -1,6 +1,11 @@
 import UserRepository from '../repositories/userRepository';
 
-import type { GetUserById, GetUserReturn } from './userService.d';
+import type {
+  ChangeUsername,
+  GetUserById,
+  GetUser,
+  GetUserByIdReturn,
+} from './userService.d';
 
 export default class UserService {
   private userRepository: UserRepository;
@@ -9,13 +14,17 @@ export default class UserService {
     this.userRepository = new UserRepository();
   }
 
-  async getUserById(data: GetUserById): Promise<GetUserReturn> {
-    const getUser: GetUserReturn | null = await this.userRepository.getUserById(
-      { id: data.id },
-    );
+  async getUserById(data: GetUserById): Promise<GetUserByIdReturn> {
+    const getUser: GetUser | null = await this.userRepository.getUserDataById({
+      id: data.id,
+    });
 
     if (!getUser) throw new Error('Perfil do usuário não encontrado.');
 
-    return getUser;
+    return {
+      username: getUser.username,
+      picture: getUser.picture,
+      bio: getUser.bio,
+    };
   }
 }
