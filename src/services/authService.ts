@@ -89,7 +89,6 @@ export default class AuthService {
       username: data.username,
       email: data.email,
       password: hashPassword,
-      profile: { create: {} },
     });
 
     const tokens = await this.generateTokens(createUser.id);

@@ -1,25 +1,20 @@
 import { Router } from 'express';
-import ProfileController from '../controllers/profileController';
+import UserController from '../controllers/userController';
 
-export default class ProfileRoute {
+export default class UserRoute {
   public router: Router;
-  private ProfileController: ProfileController;
+  private UserController: UserController;
 
   constructor() {
     this.router = Router();
-    this.ProfileController = new ProfileController();
+    this.UserController = new UserController();
     this.routes();
   }
 
   private routes(): void {
     this.router.get(
-      '/getProfile',
-      this.ProfileController.getProfile.bind(this.ProfileController),
-    );
-
-    this.router.patch(
-      '/updateProfile',
-      this.ProfileController.updateProfile.bind(this.ProfileController),
+      '/getUserById',
+      this.UserController.getUserById.bind(this.UserController),
     );
   }
 }
