@@ -26,5 +26,10 @@ export default class UserRoute {
       '/changeEmail',
       this.UserController.changeEmail.bind(this.UserController),
     );
+
+    this.router.patch(
+      '/changePassword',
+      this.UserController.changePassword.bind(this.UserController),
+    );
   }
 }
