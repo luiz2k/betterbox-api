@@ -7,3 +7,9 @@ export type GetUser = {
 export type ChangeUsernameBody = {
   newUsername: string;
 };
+
+export type ChangeEmailBody = {
+  email: string;
+  password: string;
+  newEmail: string;
+};

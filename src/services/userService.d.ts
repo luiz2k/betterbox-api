@@ -1,14 +1,7 @@
+import { user as User } from '@prisma/client';
+
 export type GetUserById = {
   id: number;
-};
-
-export type GetUser = {
-  id: number;
-  username: string;
-  email: string;
-  password: string;
-  picture: string | null;
-  bio: string | null;
 };
 
 export type GetUserByIdReturn = {
@@ -21,3 +14,18 @@ export type ChangeUsername = {
   id: number;
   username: string;
 };
+
+export type ChangeEmail = {
+  id: number;
+  email: string;
+  password: string;
+  newEmail: string;
+};
+
+export type VerifyEmailAndPassord = {
+  id: number;
+  email: string;
+  password: string;
+};
+
+export { User };

@@ -1,10 +1,13 @@
 import UserRepository from '../repositories/userRepository';
+import bcrypt from 'bcryptjs';
 
 import type {
   ChangeUsername,
   GetUserById,
-  GetUser,
   GetUserByIdReturn,
+  ChangeEmail,
+  VerifyEmailAndPassord,
+  User,
 } from './userService.d';
 
 export default class UserService {
@@ -14,8 +17,34 @@ export default class UserService {
     this.userRepository = new UserRepository();
   }
 
-  async getUserById(data: GetUserById): Promise<GetUserByIdReturn> {
-    const getUser: GetUser | null = await this.userRepository.getUserDataById({
+  private async verifyEmailAndPassord(
+    data: VerifyEmailAndPassord,
+  ): Promise<void> {
+    const userByEmail: User | null =
+      await this.userRepository.getUserDataByEmail({
+        email: data.email,
+      });
+
+    if (!userByEmail) throw new Error('Usuário não encontrado.');
+
+    const userById: User | null = await this.userRepository.getUserDataById({
+      id: data.id,
+    });
+
+    if (userById?.email !== data.email)
+      throw new Error('O e-mail informado não corresponde ao e-mail atual.');
+
+    const comparePasswords: boolean = bcrypt.compareSync(
+      data.password,
+      userByEmail.password,
+    );
+
+    if (!comparePasswords)
+      throw new Error('A senha informada não corresponde a senha atual.');
+  }
+
+  public async getUserById(data: GetUserById): Promise<GetUserByIdReturn> {
+    const getUser: User | null = await this.userRepository.getUserDataById({
       id: data.id,
     });
 
@@ -28,7 +57,7 @@ export default class UserService {
     };
   }
 
-  async changeUsername(data: ChangeUsername): Promise<void> {
+  public async changeUsername(data: ChangeUsername): Promise<void> {
     const getUser: GetUserByIdReturn | null =
       await this.userRepository.getUserDataById({ id: data.id });
 
@@ -38,6 +67,26 @@ export default class UserService {
     await this.userRepository.updateUserData({
       id: data.id,
       username: data.username,
+    });
+  }
+
+  async changeEmail(data: ChangeEmail): Promise<void> {
+    const userByEmail: User | null =
+      await this.userRepository.getUserDataByEmail({
+        email: data.newEmail,
+      });
+
+    if (userByEmail) throw new Error('Já existe um registro com esse e-mail.');
+
+    await this.verifyEmailAndPassord({
+      id: data.id,
+      email: data.email,
+      password: data.password,
+    });
+
+    await this.userRepository.updateUserData({
+      id: data.id,
+      email: data.newEmail,
     });
   }
 }

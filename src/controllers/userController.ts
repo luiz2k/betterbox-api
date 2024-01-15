@@ -2,9 +2,16 @@ import { Request, Response } from 'express';
 
 import UserService from '../services/userService';
 
-import { ChangeUsernameBody, GetUser } from './userController.d';
+import {
+  ChangeEmailBody,
+  ChangeUsernameBody,
+  GetUser,
+} from './userController.d';
 
-import { changeUsernameSchema } from '../validations/userValidation';
+import {
+  changeEmailSchema,
+  changeUsernameSchema,
+} from '../validations/userValidation';
 
 export default class UserController {
   private userService: UserService;
@@ -48,6 +55,36 @@ export default class UserController {
       return res
         .status(200)
         .send(`Nome de usuário alterado para ${newUsername}.`);
+    } catch (error) {
+      console.error(error);
+
+      return error instanceof Error
+        ? res.status(400).send({ error: 'Erro interno do servidor.' })
+        : res.status(400).send({ error: 'Erro interno do servidor.' });
+    }
+  }
+
+  async changeEmail(req: Request, res: Response): Promise<Response> {
+    const { email, password, newEmail }: ChangeEmailBody = req.body;
+    const userId: number = req.userId;
+
+    try {
+      const validation = changeEmailSchema.safeParse({
+        email,
+        password,
+        newEmail,
+      });
+
+      if (!validation.success) throw new Error(validation.error.message);
+
+      await this.userService.changeEmail({
+        id: userId,
+        email,
+        password,
+        newEmail,
+      });
+
+      return res.status(200).send('Email alterado com sucesso!');
     } catch (error) {
       console.error(error);
 
