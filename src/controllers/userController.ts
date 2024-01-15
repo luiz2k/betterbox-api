@@ -10,6 +10,7 @@ import {
 
 import {
   changeEmailSchema,
+  changePasswordSchema,
   changeUsernameSchema,
 } from '../validations/userValidation';
 
@@ -85,6 +86,36 @@ export default class UserController {
       });
 
       return res.status(200).send('Email alterado com sucesso!');
+    } catch (error) {
+      console.error(error);
+
+      return error instanceof Error
+        ? res.status(400).send({ error: 'Erro interno do servidor.' })
+        : res.status(400).send({ error: 'Erro interno do servidor.' });
+    }
+  }
+
+  async changePassword(req: Request, res: Response): Promise<Response> {
+    const { email, password, newPassword } = req.body;
+    const userId: number = req.userId;
+
+    try {
+      const validation = changePasswordSchema.safeParse({
+        email,
+        password,
+        newPassword,
+      });
+
+      if (!validation.success) throw new Error(validation.error.message);
+
+      await this.userService.changePassword({
+        id: userId,
+        email,
+        password,
+        newPassword,
+      });
+
+      return res.status(200).send('Senha alterada com sucesso!');
     } catch (error) {
       console.error(error);
 

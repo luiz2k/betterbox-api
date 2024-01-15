@@ -22,6 +22,13 @@ export type ChangeEmail = {
   newEmail: string;
 };
 
+export type ChangePassword = {
+  id: number;
+  email: string;
+  password: string;
+  newPassword: string;
+};
+
 export type VerifyEmailAndPassord = {
   id: number;
   email: string;

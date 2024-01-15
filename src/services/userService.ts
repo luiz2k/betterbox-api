@@ -8,6 +8,7 @@ import type {
   ChangeEmail,
   VerifyEmailAndPassord,
   User,
+  ChangePassword,
 } from './userService.d';
 
 export default class UserService {
@@ -87,6 +88,35 @@ export default class UserService {
     await this.userRepository.updateUserData({
       id: data.id,
       email: data.newEmail,
+    });
+  }
+
+  async changePassword(data: ChangePassword): Promise<void> {
+    await this.verifyEmailAndPassord({
+      id: data.id,
+      email: data.email,
+      password: data.password,
+    });
+
+    const userById: User | null = await this.userRepository.getUserDataById({
+      id: data.id,
+    });
+
+    if (!userById) throw new Error('Usuário não encontrado.');
+
+    const comparePasswords: boolean = bcrypt.compareSync(
+      data.newPassword,
+      userById.password,
+    );
+
+    if (comparePasswords)
+      throw new Error('A nova senha deve ser diferente da senha atual.');
+
+    const hashPassword: string = bcrypt.hashSync(data.newPassword, 10);
+
+    await this.userRepository.updateUserData({
+      id: data.id,
+      password: hashPassword,
     });
   }
 }
