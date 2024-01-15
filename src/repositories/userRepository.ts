@@ -9,6 +9,12 @@ export default class UserRepository {
     return await prisma.user.findUnique({ where: { id: data.id } });
   }
 
+  async getUserDataByEmail(
+    data: Omit<User, 'id' | 'username' | 'password' | 'picture' | 'bio'>,
+  ): Promise<User | null> {
+    return await prisma.user.findUnique({ where: { email: data.email } });
+  }
+
   async updateUserData(data: UpdateUserData): Promise<void> {
     await prisma.user.update({ where: { id: data.id }, data: { ...data } });
   }
