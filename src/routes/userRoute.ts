@@ -31,5 +31,10 @@ export default class UserRoute {
       '/changePassword',
       this.UserController.changePassword.bind(this.UserController),
     );
+
+    this.router.delete(
+      '/deleteAccount',
+      this.UserController.deleteAccount.bind(this.UserController),
+    );
   }
 }
