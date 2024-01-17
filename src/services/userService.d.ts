@@ -35,4 +35,10 @@ export type VerifyEmailAndPassord = {
   password: string;
 };
 
+export type DeleteAccount = {
+  id: number;
+  email: string;
+  password: string;
+};
+
 export { User };

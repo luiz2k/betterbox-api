@@ -13,3 +13,8 @@ export type ChangeEmailBody = {
   password: string;
   newEmail: string;
 };
+
+export type DeleteAccountBody = {
+  email: string;
+  password: string;
+};

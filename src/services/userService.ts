@@ -9,6 +9,7 @@ import type {
   VerifyEmailAndPassord,
   User,
   ChangePassword,
+  DeleteAccount,
 } from './userService.d';
 
 export default class UserService {
@@ -71,7 +72,7 @@ export default class UserService {
     });
   }
 
-  async changeEmail(data: ChangeEmail): Promise<void> {
+  public async changeEmail(data: ChangeEmail): Promise<void> {
     const userByEmail: User | null =
       await this.userRepository.getUserDataByEmail({
         email: data.newEmail,
@@ -91,7 +92,7 @@ export default class UserService {
     });
   }
 
-  async changePassword(data: ChangePassword): Promise<void> {
+  public async changePassword(data: ChangePassword): Promise<void> {
     await this.verifyEmailAndPassord({
       id: data.id,
       email: data.email,
@@ -118,5 +119,15 @@ export default class UserService {
       id: data.id,
       password: hashPassword,
     });
+  }
+
+  public async deleteAccount(data: DeleteAccount): Promise<void> {
+    await this.verifyEmailAndPassord({
+      id: data.id,
+      email: data.email,
+      password: data.password,
+    });
+
+    await this.userRepository.deleteAccount({ id: data.id, email: data.email });
   }
 }

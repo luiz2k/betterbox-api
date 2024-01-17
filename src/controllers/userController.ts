@@ -5,6 +5,7 @@ import UserService from '../services/userService';
 import {
   ChangeEmailBody,
   ChangeUsernameBody,
+  DeleteAccountBody,
   GetUser,
 } from './userController.d';
 
@@ -116,6 +117,27 @@ export default class UserController {
       });
 
       return res.status(200).send('Senha alterada com sucesso!');
+    } catch (error) {
+      console.error(error);
+
+      return error instanceof Error
+        ? res.status(400).send({ error: 'Erro interno do servidor.' })
+        : res.status(400).send({ error: 'Erro interno do servidor.' });
+    }
+  }
+
+  async deleteAccount(req: Request, res: Response): Promise<Response> {
+    const { email, password }: DeleteAccountBody = req.body;
+    const userId: number = req.userId;
+
+    try {
+      await this.userService.deleteAccount({
+        id: userId,
+        email,
+        password,
+      });
+
+      return res.status(200).send('Conta excluída com sucesso!');
     } catch (error) {
       console.error(error);
 
