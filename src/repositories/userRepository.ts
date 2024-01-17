@@ -18,4 +18,10 @@ export default class UserRepository {
   async updateUserData(data: UpdateUserData): Promise<void> {
     await prisma.user.update({ where: { id: data.id }, data: { ...data } });
   }
+
+  async deleteAccount(
+    data: Omit<User, 'username' | 'password' | 'picture' | 'bio'>,
+  ): Promise<void> {
+    await prisma.user.delete({ where: { id: data.id, email: data.email } });
+  }
 }
