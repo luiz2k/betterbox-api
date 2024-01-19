@@ -5,6 +5,7 @@ import type { CreateMovieBody, MovieData, Movie } from './createMovie.d';
 import MovieRepository from '../repositories/movieRepository';
 
 import axios from 'axios';
+import { createMovieSchema } from '../validations/createMovieValidation';
 
 export default class CreateMovie {
   private movieRepository: MovieRepository;
@@ -21,6 +22,10 @@ export default class CreateMovie {
     const { movieId }: CreateMovieBody = req.body;
 
     try {
+      const validation = createMovieSchema.safeParse({ movieId });
+
+      if (!validation.success) throw new Error(validation.error.message);
+
       const MovieData: MovieData = await axios({
         method: 'get',
         url: `https://api.themoviedb.org/3/movie/${movieId}?language=pt-BR`,
