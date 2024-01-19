@@ -1,10 +1,12 @@
-interface Comment {
+export type CreateCommentBody = {
   comment: string;
-}
+};
 
-interface Movie {
+export type EditCommentBody = {
+  newComment: string;
+};
+
+export type Movie = {
   id: number;
   name: string;
-}
-
-export { Comment, Movie };
+};

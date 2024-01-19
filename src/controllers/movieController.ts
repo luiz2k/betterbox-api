@@ -2,7 +2,16 @@ import { Request, Response } from 'express';
 
 import MovieService from '../services/movieService';
 
-import type { Comment, Movie } from './movieController.d';
+import type {
+  CreateCommentBody,
+  EditCommentBody,
+  Movie,
+} from './movieController.d';
+
+import {
+  createCommentSchema,
+  editCommentSchema,
+} from '../validations/movieValidation';
 
 export default class MovieController {
   private movieService: MovieService;
@@ -93,11 +102,15 @@ export default class MovieController {
   }
 
   public async createComment(req: Request, res: Response): Promise<Response> {
-    const { comment }: Comment = req.body;
+    const { comment }: CreateCommentBody = req.body;
     const userId: number = req.userId;
     const movie: Movie = req.movie;
 
     try {
+      const validation = createCommentSchema.safeParse({ comment });
+
+      if (!validation.success) throw new Error(validation.error.message);
+
       await this.movieService.createComment({
         userId,
         movieId: movie.id,
@@ -118,15 +131,19 @@ export default class MovieController {
   }
 
   public async editComment(req: Request, res: Response): Promise<Response> {
-    const { comment }: Comment = req.body;
+    const { newComment }: EditCommentBody = req.body;
     const userId: number = req.userId;
     const movie: Movie = req.movie;
 
     try {
+      const validation = editCommentSchema.safeParse({ newComment });
+
+      if (!validation.success) throw new Error(validation.error.message);
+
       await this.movieService.editComment({
         userId,
         movieId: movie.id,
-        comment,
+        comment: newComment,
         editedAt: new Date(),
       });
 
