@@ -40,19 +40,24 @@ export default class AuthService {
       expiresIn: '7d',
     });
 
-    const createdAt: Date = new Date();
-    const expiresAt: Date = new Date(createdAt);
-    expiresAt.setDate(createdAt.getDate() + 7);
+    const currentDate: Date = new Date();
+
+    const refreshTokenExpiresAt: Date = new Date(currentDate);
+    refreshTokenExpiresAt.setDate(currentDate.getDate() + 7);
+
+    const accessTokenExpiresAt: Date = new Date(currentDate);
+    accessTokenExpiresAt.setHours(currentDate.getHours() + 1);
 
     await this.tokenRepostitory.addRefreshToken({
       token: refreshToken,
-      createdAt: createdAt,
-      expiresAt: expiresAt,
+      createdAt: currentDate,
+      expiresAt: refreshTokenExpiresAt,
       userId,
     });
 
     return {
       accessToken,
+      accessTokenExpiresAt,
       refreshToken,
     };
   }

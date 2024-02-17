@@ -10,6 +10,7 @@ export interface RefreshToken {
 
 interface AccessAndRefreshToken {
   accessToken: string;
+  accessTokenExpiresAt: Date;
   refreshToken: string;
 }
 
