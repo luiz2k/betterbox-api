@@ -27,15 +27,20 @@ export default class MovieController {
     try {
       await this.movieService.addToWatched({ ...movie, userId });
 
-      return res
-        .status(200)
-        .send(`O filme ${movie.name} foi adicionado aos assistidos.`);
+      return res.status(200).send({
+        status: 'success',
+        message: `O filme ${movie.name} foi adicionado aos assistidos.`,
+      });
     } catch (error) {
       console.error(error);
 
       return error instanceof Error
-        ? res.status(400).send({ error: 'Erro interno do servidor.' })
-        : res.status(400).send({ error: 'Erro interno do servidor.' });
+        ? res
+            .status(400)
+            .send({ status: 'error', message: 'Erro interno do servidor.' })
+        : res
+            .status(400)
+            .send({ status: 'error', message: 'Erro interno do servidor.' });
     }
   }
 
@@ -49,15 +54,20 @@ export default class MovieController {
     try {
       await this.movieService.removeFromWatched({ ...movie, userId });
 
-      return res
-        .status(200)
-        .send(`O filme ${movie.name} foi removido de assistidos.`);
+      return res.status(200).send({
+        status: 'success',
+        message: `O filme ${movie.name} foi removido de assistidos.`,
+      });
     } catch (error) {
       console.error(error);
 
       return error instanceof Error
-        ? res.status(400).send({ error: 'Erro interno do servidor.' })
-        : res.status(400).send({ error: 'Erro interno do servidor.' });
+        ? res
+            .status(400)
+            .send({ status: 'error', message: 'Erro interno do servidor.' })
+        : res
+            .status(400)
+            .send({ status: 'error', message: 'Erro interno do servidor.' });
     }
   }
 
@@ -68,15 +78,20 @@ export default class MovieController {
     try {
       await this.movieService.addToFavorite({ ...movie, userId });
 
-      return res
-        .status(200)
-        .send(`O filme ${movie.name} foi adicionado aos favoritos.`);
+      return res.status(200).send({
+        status: 'success',
+        message: `O filme ${movie.name} foi adicionado aos favoritos.`,
+      });
     } catch (error) {
       console.error(error);
 
       return error instanceof Error
-        ? res.status(400).send({ error: 'Erro interno do servidor.' })
-        : res.status(400).send({ error: 'Erro interno do servidor.' });
+        ? res
+            .status(400)
+            .send({ status: 'error', message: 'Erro interno do servidor.' })
+        : res
+            .status(400)
+            .send({ status: 'error', message: 'Erro interno do servidor.' });
     }
   }
 
@@ -89,15 +104,20 @@ export default class MovieController {
     try {
       await this.movieService.removeFromFavorite({ ...movie, userId });
 
-      return res
-        .status(200)
-        .send(`O filme ${movie.name} foi removido dos favoritos.`);
+      return res.status(200).send({
+        status: 'success',
+        message: `O filme ${movie.name} foi removido dos favoritos.`,
+      });
     } catch (error) {
       console.error(error);
 
       return error instanceof Error
-        ? res.status(400).send({ error: 'Erro interno do servidor.' })
-        : res.status(400).send({ error: 'Erro interno do servidor.' });
+        ? res
+            .status(400)
+            .send({ status: 'error', message: 'Erro interno do servidor.' })
+        : res
+            .status(400)
+            .send({ status: 'error', message: 'Erro interno do servidor.' });
     }
   }
 
@@ -118,15 +138,20 @@ export default class MovieController {
         commentedAt: new Date(),
       });
 
-      return res
-        .status(201)
-        .send(`Comentário adicionado ao filme ${movie.name}.`);
+      return res.status(201).send({
+        status: 'success',
+        message: `Comentário adicionado ao filme ${movie.name}.`,
+      });
     } catch (error) {
       console.error(error);
 
       return error instanceof Error
-        ? res.status(400).send({ error: 'Erro interno do servidor.' })
-        : res.status(400).send({ error: 'Erro interno do servidor.' });
+        ? res
+            .status(400)
+            .send({ status: 'error', message: 'Erro interno do servidor.' })
+        : res
+            .status(400)
+            .send({ status: 'error', message: 'Erro interno do servidor.' });
     }
   }
 
@@ -147,13 +172,20 @@ export default class MovieController {
         editedAt: new Date(),
       });
 
-      return res.status(200).send(`Comentário editado no filme ${movie.name}.`);
+      return res.status(200).send({
+        status: 'success',
+        message: `Comentário editado no filme ${movie.name}.`,
+      });
     } catch (error) {
       console.error(error);
 
       return error instanceof Error
-        ? res.status(400).send({ error: 'Erro interno do servidor.' })
-        : res.status(400).send({ error: 'Erro interno do servidor.' });
+        ? res
+            .status(400)
+            .send({ status: 'error', message: 'Erro interno do servidor.' })
+        : res
+            .status(400)
+            .send({ status: 'error', message: 'Erro interno do servidor.' });
     }
   }
 
@@ -167,15 +199,20 @@ export default class MovieController {
         movieId: movie.id,
       });
 
-      return res
-        .status(200)
-        .send(`Comentário removido do filme ${movie.name}.`);
+      return res.status(200).send({
+        status: 'success',
+        message: `Comentário removido do filme ${movie.name}.`,
+      });
     } catch (error) {
       console.error(error);
 
       return error instanceof Error
-        ? res.status(400).send({ error: 'Erro interno do servidor.' })
-        : res.status(400).send({ error: 'Erro interno do servidor.' });
+        ? res
+            .status(400)
+            .send({ status: 'error', message: 'Erro interno do servidor.' })
+        : res
+            .status(400)
+            .send({ status: 'error', message: 'Erro interno do servidor.' });
     }
   }
 }
