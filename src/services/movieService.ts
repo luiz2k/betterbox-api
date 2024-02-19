@@ -11,6 +11,8 @@ import type {
   Comment,
   EditComment,
   DeleteComment,
+  GetMovieWatched,
+  GetFavoriteMovie,
 } from './movieService.d';
 
 export default class MovieService {
@@ -44,6 +46,21 @@ export default class MovieService {
     });
   }
 
+  public async getMovieWatched(
+    data: GetMovieWatched,
+  ): Promise<Omit<MovieWatched, 'movieId' | 'userId'>> {
+    const movieWatched: MovieWatched | null =
+      await this.movieRepository.getMovieWatched({
+        userId: data.userId,
+        movieId: data.id,
+      });
+
+    if (!movieWatched)
+      throw new Error('O filme informado não está na lista de assistidos.');
+
+    return { watchedDate: movieWatched.watchedDate };
+  }
+
   public async addToFavorite(data: AddToFavorite): Promise<void> {
     const favoriteMovie: FavoriteMovie | null =
       await this.movieRepository.getFavoriteMovie({
@@ -73,6 +90,17 @@ export default class MovieService {
       userId: data.userId,
       movieId: data.id,
     });
+  }
+
+  public async getFavoriteMovie(data: GetFavoriteMovie): Promise<void> {
+    const movieFavorite: FavoriteMovie | null =
+      await this.movieRepository.getFavoriteMovie({
+        userId: data.userId,
+        movieId: data.id,
+      });
+
+    if (!movieFavorite)
+      throw new Error('O filme informado não está na lista de favoritos.');
   }
 
   public async createComment(data: CreateComment): Promise<void> {

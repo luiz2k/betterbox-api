@@ -1,72 +1,71 @@
-interface AddToWatched {
+export type AddToWatched = {
   id: number;
   name: string;
   userId: number;
-}
+};
 
-interface RemoveFromWatched {
+export type RemoveFromWatched = {
   id: number;
   userId: number;
-}
+};
 
-interface MovieWatched {
+export type GetMovieWatched = {
+  id: number;
+  name: string;
+  userId: number;
+};
+
+export type MovieWatched = {
   userId: number;
   movieId: number;
   watchedDate: Date;
-}
+};
 
-interface AddToFavorite {
+export type AddToFavorite = {
   id: number;
   name: string;
   userId: number;
-}
+};
 
-interface RemoveFromFavorite {
+export type RemoveFromFavorite = {
   id: number;
   userId: number;
-}
+};
 
-interface FavoriteMovie {
+export type GetFavoriteMovie = {
+  id: number;
+  name: string;
+  userId: number;
+};
+
+export type FavoriteMovie = {
   userId: number;
   movieId: number;
-}
+};
 
-interface CreateComment {
+export type CreateComment = {
   userId: number;
   movieId: number;
   comment: string;
   commentedAt: Date;
-}
+};
 
-interface Comment {
+export type Comment = {
   userId: number;
   movieId: number;
   comment: string;
   commentedAt: Date;
   editedAt: Date | null;
-}
+};
 
-interface EditComment {
+export type EditComment = {
   userId: number;
   movieId: number;
   comment: string;
   editedAt: Date;
-}
+};
 
-interface DeleteComment {
+export type DeleteComment = {
   userId: number;
   movieId: number;
-}
-
-export {
-  AddToWatched,
-  RemoveFromWatched,
-  MovieWatched,
-  AddToFavorite,
-  RemoveFromFavorite,
-  FavoriteMovie,
-  CreateComment,
-  Comment,
-  EditComment,
-  DeleteComment,
 };

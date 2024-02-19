@@ -23,6 +23,11 @@ export default class MovieRoute {
     );
 
     this.router.post(
+      '/getMovieWatched',
+      this.movieController.getMovieWatched.bind(this.movieController),
+    );
+
+    this.router.post(
       '/addToFavorite',
       this.movieController.addToFavorite.bind(this.movieController),
     );
@@ -30,6 +35,11 @@ export default class MovieRoute {
     this.router.post(
       '/removeFromFavorite',
       this.movieController.removeFromFavorite.bind(this.movieController),
+    );
+
+    this.router.post(
+      '/getFavoriteMovie',
+      this.movieController.getFavoriteMovie.bind(this.movieController),
     );
 
     this.router.post(

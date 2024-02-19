@@ -71,6 +71,34 @@ export default class MovieController {
     }
   }
 
+  public async getMovieWatched(req: Request, res: Response): Promise<Response> {
+    const userId: number = req.userId;
+    const movie: Movie = req.movie;
+
+    try {
+      const movieWatched = await this.movieService.getMovieWatched({
+        ...movie,
+        userId,
+      });
+
+      return res.status(200).send({
+        status: 'success',
+        message: `O filme ${movie.name} está na lista de assistidos.`,
+        data: { ...movieWatched },
+      });
+    } catch (error) {
+      console.error(error);
+
+      return error instanceof Error
+        ? res
+            .status(400)
+            .send({ status: 'error', message: 'Erro interno do servidor.' })
+        : res
+            .status(400)
+            .send({ status: 'error', message: 'Erro interno do servidor.' });
+    }
+  }
+
   public async addToFavorite(req: Request, res: Response): Promise<Response> {
     const userId: number = req.userId;
     const movie: Movie = req.movie;
@@ -107,6 +135,36 @@ export default class MovieController {
       return res.status(200).send({
         status: 'success',
         message: `O filme ${movie.name} foi removido dos favoritos.`,
+      });
+    } catch (error) {
+      console.error(error);
+
+      return error instanceof Error
+        ? res
+            .status(400)
+            .send({ status: 'error', message: 'Erro interno do servidor.' })
+        : res
+            .status(400)
+            .send({ status: 'error', message: 'Erro interno do servidor.' });
+    }
+  }
+
+  public async getFavoriteMovie(
+    req: Request,
+    res: Response,
+  ): Promise<Response> {
+    const userId: number = req.userId;
+    const movie: Movie = req.movie;
+
+    try {
+      await this.movieService.getFavoriteMovie({
+        ...movie,
+        userId,
+      });
+
+      return res.status(200).send({
+        status: 'success',
+        message: `O filme ${movie.name} está na lista de favoritos.`,
       });
     } catch (error) {
       console.error(error);
