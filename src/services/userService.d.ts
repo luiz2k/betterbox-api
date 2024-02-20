@@ -1,4 +1,4 @@
-import { user as User } from '@prisma/client';
+import { user as User, movieWatched as MovieWatched } from '@prisma/client';
 
 export type GetUserById = {
   id: number;
@@ -41,4 +41,8 @@ export type DeleteAccount = {
   password: string;
 };
 
-export { User };
+export type GetAllWatchedMovies = {
+  userId: number;
+};
+
+export { User, MovieWatched };

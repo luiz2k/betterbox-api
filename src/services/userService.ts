@@ -10,6 +10,8 @@ import type {
   User,
   ChangePassword,
   DeleteAccount,
+  MovieWatched,
+  GetAllWatchedMovies,
 } from './userService.d';
 
 export default class UserService {
@@ -129,5 +131,18 @@ export default class UserService {
     });
 
     await this.userRepository.deleteAccount({ id: data.id, email: data.email });
+  }
+
+  public async getAllWatchedMovies(
+    data: GetAllWatchedMovies,
+  ): Promise<MovieWatched[]> {
+    const moviesWatched = await this.userRepository.getAllWatchedMovies({
+      userId: data.userId,
+    });
+
+    if (!moviesWatched)
+      throw new Error('O usuário não possui nenhum filme assistido.');
+
+    return moviesWatched;
   }
 }

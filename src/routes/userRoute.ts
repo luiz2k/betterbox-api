@@ -36,5 +36,10 @@ export default class UserRoute {
       '/deleteAccount',
       this.UserController.deleteAccount.bind(this.UserController),
     );
+
+    this.router.post(
+      '/getAllWatchedMovies',
+      this.UserController.getAllWatchedMovies.bind(this.UserController),
+    );
   }
 }

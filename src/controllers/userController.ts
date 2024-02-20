@@ -146,4 +146,33 @@ export default class UserController {
         : res.status(400).send({ error: 'Erro interno do servidor.' });
     }
   }
+
+  public async getAllWatchedMovies(
+    req: Request,
+    res: Response,
+  ): Promise<Response> {
+    const userId: number = req.userId;
+
+    try {
+      const moviesWatched = await this.userService.getAllWatchedMovies({
+        userId,
+      });
+
+      return res.status(200).send({
+        status: 'success',
+        message: `Todos os filmes assistidos.`,
+        data: [...moviesWatched],
+      });
+    } catch (error) {
+      console.error(error);
+
+      return error instanceof Error
+        ? res
+            .status(400)
+            .send({ status: 'error', message: 'Erro interno do servidor.' })
+        : res
+            .status(400)
+            .send({ status: 'error', message: 'Erro interno do servidor.' });
+    }
+  }
 }
