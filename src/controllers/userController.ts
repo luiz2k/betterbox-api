@@ -6,6 +6,7 @@ import {
   ChangeEmailBody,
   ChangeUsernameBody,
   DeleteAccountBody,
+  FavoriteMovie,
   GetUser,
 } from './userController.d';
 
@@ -162,6 +163,36 @@ export default class UserController {
         status: 'success',
         message: `Todos os filmes assistidos.`,
         data: [...moviesWatched],
+      });
+    } catch (error) {
+      console.error(error);
+
+      return error instanceof Error
+        ? res
+            .status(400)
+            .send({ status: 'error', message: 'Erro interno do servidor.' })
+        : res
+            .status(400)
+            .send({ status: 'error', message: 'Erro interno do servidor.' });
+    }
+  }
+
+  public async getAllFavoriteMovies(
+    req: Request,
+    res: Response,
+  ): Promise<Response> {
+    const userId: number = req.userId;
+
+    try {
+      const favoriteMovies: FavoriteMovie[] =
+        await this.userService.getAllFavoriteMovies({
+          userId,
+        });
+
+      return res.status(200).send({
+        status: 'success',
+        message: `Todos os filmes favoritados.`,
+        data: [...favoriteMovies],
       });
     } catch (error) {
       console.error(error);

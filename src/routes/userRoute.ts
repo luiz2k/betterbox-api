@@ -41,5 +41,10 @@ export default class UserRoute {
       '/getAllWatchedMovies',
       this.UserController.getAllWatchedMovies.bind(this.UserController),
     );
+
+    this.router.post(
+      '/getAllFavoriteMovies',
+      this.UserController.getAllFavoriteMovies.bind(this.UserController),
+    );
   }
 }

@@ -1,3 +1,5 @@
+import { favoriteMovie as FavoriteMovie } from '@prisma/client';
+
 export type GetUser = {
   username: string;
   picture: string | null;
@@ -18,3 +20,5 @@ export type DeleteAccountBody = {
   email: string;
   password: string;
 };
+
+export { FavoriteMovie };

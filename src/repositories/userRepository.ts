@@ -1,7 +1,11 @@
-import { movieWatched } from '@prisma/client';
 import prisma from '../database/database';
 
-import type { UpdateUserData, User } from './userRepository.d';
+import type {
+  FavoriteMovie,
+  MovieWatched,
+  UpdateUserData,
+  User,
+} from './userRepository.d';
 
 export default class UserRepository {
   async getUserDataById(
@@ -27,9 +31,17 @@ export default class UserRepository {
   }
 
   public async getAllWatchedMovies(
-    data: Omit<movieWatched, 'movieId' | 'watchedDate'>,
+    data: Omit<MovieWatched, 'movieId' | 'watchedDate'>,
   ) {
     return await prisma.movieWatched.findMany({
+      where: {
+        userId: data.userId,
+      },
+    });
+  }
+
+  public async getAllFavoriteMovies(data: Omit<FavoriteMovie, 'movieId'>) {
+    return await prisma.favoriteMovie.findMany({
       where: {
         userId: data.userId,
       },

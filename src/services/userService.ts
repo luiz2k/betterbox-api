@@ -12,6 +12,8 @@ import type {
   DeleteAccount,
   MovieWatched,
   GetAllWatchedMovies,
+  GetAllFavoriteMovies,
+  FavoriteMovie,
 } from './userService.d';
 
 export default class UserService {
@@ -144,5 +146,19 @@ export default class UserService {
       throw new Error('O usuário não possui nenhum filme assistido.');
 
     return moviesWatched;
+  }
+
+  public async getAllFavoriteMovies(
+    data: GetAllFavoriteMovies,
+  ): Promise<FavoriteMovie[]> {
+    const favoriteMovies: FavoriteMovie[] =
+      await this.userRepository.getAllFavoriteMovies({
+        userId: data.userId,
+      });
+
+    if (!favoriteMovies)
+      throw new Error('O usuário não possui nenhum filme favoritado.');
+
+    return favoriteMovies;
   }
 }

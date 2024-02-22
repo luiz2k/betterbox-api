@@ -1,4 +1,8 @@
-import { user as User } from '@prisma/client';
+import {
+  user as User,
+  movieWatched as MovieWatched,
+  favoriteMovie as FavoriteMovie,
+} from '@prisma/client';
 
 export type UpdateUserData = {
   id: number;
@@ -9,4 +13,4 @@ export type UpdateUserData = {
   bio?: string | null;
 };
 
-export { User };
+export { User, MovieWatched, FavoriteMovie };
