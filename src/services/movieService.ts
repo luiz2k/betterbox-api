@@ -73,6 +73,7 @@ export default class MovieService {
     await this.movieRepository.addToFavorite({
       userId: data.userId,
       movieId: data.id,
+      favoriteDate: new Date(),
     });
   }
 

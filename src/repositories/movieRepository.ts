@@ -49,7 +49,7 @@ export default class MovieRepository {
   }
 
   public async getFavoriteMovie(
-    data: favoriteMovie,
+    data: Omit<favoriteMovie, 'favoriteDate'>,
   ): Promise<favoriteMovie | null> {
     return await prisma.favoriteMovie.findUnique({
       where: {
@@ -67,7 +67,9 @@ export default class MovieRepository {
     });
   }
 
-  public async removeFromFavorite(data: favoriteMovie): Promise<void> {
+  public async removeFromFavorite(
+    data: Omit<favoriteMovie, 'favoriteDate'>,
+  ): Promise<void> {
     await prisma.favoriteMovie.delete({
       where: {
         userId_movieId: {
