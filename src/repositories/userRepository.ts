@@ -39,7 +39,9 @@ export default class UserRepository {
     });
   }
 
-  public async getAllFavoriteMovies(data: Omit<FavoriteMovie, 'movieId'>) {
+  public async getAllFavoriteMovies(
+    data: Omit<FavoriteMovie, 'movieId' | 'favoriteDate'>,
+  ) {
     return await prisma.favoriteMovie.findMany({
       where: { userId: data.userId },
       orderBy: { favoriteDate: 'desc' },
