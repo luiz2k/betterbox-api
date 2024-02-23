@@ -34,17 +34,15 @@ export default class UserRepository {
     data: Omit<MovieWatched, 'movieId' | 'watchedDate'>,
   ) {
     return await prisma.movieWatched.findMany({
-      where: {
-        userId: data.userId,
-      },
+      where: { userId: data.userId },
+      orderBy: { watchedDate: 'desc' },
     });
   }
 
   public async getAllFavoriteMovies(data: Omit<FavoriteMovie, 'movieId'>) {
     return await prisma.favoriteMovie.findMany({
-      where: {
-        userId: data.userId,
-      },
+      where: { userId: data.userId },
+      orderBy: { favoriteDate: 'desc' },
     });
   }
 }
