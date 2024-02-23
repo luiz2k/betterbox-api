@@ -2,6 +2,7 @@ import prisma from '../database/database';
 
 import type {
   FavoriteMovie,
+  GetAllFavoriteMoviesReturn,
   GetAllWatchedMoviesReturn,
   MovieWatched,
   Pagination,
@@ -68,10 +69,23 @@ export default class UserRepository {
 
   public async getAllFavoriteMovies(
     data: Omit<FavoriteMovie, 'movieId' | 'favoriteDate'>,
-  ) {
-    return await prisma.favoriteMovie.findMany({
+  ): Promise<GetAllFavoriteMoviesReturn> {
+    const totalMoviesWatched: number = await prisma.favoriteMovie.count();
+
+    const pagination: PaginationReturn = this.pagination({
+      currentPage: data.page,
+      totalData: totalMoviesWatched,
+    });
+
+    const movies = await prisma.favoriteMovie.findMany({
       where: { userId: data.userId },
       orderBy: { favoriteDate: 'desc' },
     });
+
+    return {
+      currentPage: pagination.currentPage,
+      totalPages: pagination.totalPages,
+      data: [...movies],
+    };
   }
 }

@@ -186,17 +186,21 @@ export default class UserController {
     res: Response,
   ): Promise<Response> {
     const userId: number = req.userId;
+    const page = Number(req.query.page) <= 0 ? 1 : Number(req.query.page) || 1;
 
     try {
-      const favoriteMovies: FavoriteMovie[] =
+      const favoriteMovies: FavoriteMovie =
         await this.userService.getAllFavoriteMovies({
           userId,
+          page,
         });
+
+      console.log(favoriteMovies);
 
       return res.status(200).send({
         status: 'success',
-        message: `Todos os filmes favoritados.`,
-        data: [...favoriteMovies],
+        message: `Todos os filmes favoritados pelo usuário.`,
+        ...favoriteMovies,
       });
     } catch (error) {
       console.error(error);

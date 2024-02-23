@@ -149,14 +149,12 @@ export default class UserService {
 
   public async getAllFavoriteMovies(
     data: GetAllFavoriteMovies,
-  ): Promise<FavoriteMovie[]> {
-    const favoriteMovies: FavoriteMovie[] =
+  ): Promise<FavoriteMovie> {
+    const favoriteMovies: FavoriteMovie =
       await this.userRepository.getAllFavoriteMovies({
         userId: data.userId,
+        page: data.page,
       });
-
-    if (!favoriteMovies)
-      throw new Error('O usuário não possui nenhum filme favoritado.');
 
     return favoriteMovies;
   }
