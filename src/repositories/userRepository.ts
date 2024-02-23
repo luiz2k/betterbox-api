@@ -3,11 +3,22 @@ import prisma from '../database/database';
 import type {
   FavoriteMovie,
   MovieWatched,
+  Pagination,
+  PaginationReturn,
   UpdateUserData,
   User,
 } from './userRepository.d';
 
 export default class UserRepository {
+  private pagination(data: Pagination): PaginationReturn {
+    const currentPage: number = data.currentPage;
+    const take: number = 20;
+    const skip = currentPage * take - take;
+    const totalPages: number = Math.ceil(data.totalData / take);
+
+    return { skip, take, currentPage, totalPages };
+  }
+
   async getUserDataById(
     data: Omit<User, 'username' | 'email' | 'password' | 'picture' | 'bio'>,
   ): Promise<User | null> {

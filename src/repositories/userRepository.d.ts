@@ -13,4 +13,16 @@ export type UpdateUserData = {
   bio?: string | null;
 };
 
+export type Pagination = {
+  currentPage: number;
+  totalData: number;
+};
+
+export type PaginationReturn = {
+  skip: number;
+  take: number;
+  currentPage: number;
+  totalPages: number;
+};
+
 export { User, MovieWatched, FavoriteMovie };
