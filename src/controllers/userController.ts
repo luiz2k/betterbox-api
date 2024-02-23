@@ -8,6 +8,7 @@ import {
   DeleteAccountBody,
   FavoriteMovie,
   GetUser,
+  MovieWatched,
 } from './userController.d';
 
 import {
@@ -153,16 +154,19 @@ export default class UserController {
     res: Response,
   ): Promise<Response> {
     const userId: number = req.userId;
+    const page = Number(req.query.page) <= 0 ? 1 : Number(req.query.page) || 1;
 
     try {
-      const moviesWatched = await this.userService.getAllWatchedMovies({
-        userId,
-      });
+      const moviesWatched: MovieWatched =
+        await this.userService.getAllWatchedMovies({
+          userId,
+          page,
+        });
 
       return res.status(200).send({
         status: 'success',
-        message: `Todos os filmes assistidos.`,
-        data: [...moviesWatched],
+        message: `Todos os filmes assistidos pelo usuário.`,
+        ...moviesWatched,
       });
     } catch (error) {
       console.error(error);

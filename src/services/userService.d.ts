@@ -1,6 +1,6 @@
 import {
   user as User,
-  movieWatched as MovieWatched,
+  movieWatched,
   favoriteMovie as FavoriteMovie,
 } from '@prisma/client';
 
@@ -47,10 +47,17 @@ export type DeleteAccount = {
 
 export type GetAllWatchedMovies = {
   userId: number;
+  page: number;
 };
 
 export type GetAllFavoriteMovies = {
   userId: number;
 };
 
-export { User, MovieWatched, FavoriteMovie };
+export type MovieWatched = {
+  currentPage: number;
+  totalPages: number;
+  data: ?movieWatched[];
+};
+
+export { User, FavoriteMovie };

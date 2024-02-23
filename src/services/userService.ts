@@ -137,13 +137,12 @@ export default class UserService {
 
   public async getAllWatchedMovies(
     data: GetAllWatchedMovies,
-  ): Promise<MovieWatched[]> {
-    const moviesWatched = await this.userRepository.getAllWatchedMovies({
-      userId: data.userId,
-    });
-
-    if (!moviesWatched)
-      throw new Error('O usuário não possui nenhum filme assistido.');
+  ): Promise<MovieWatched> {
+    const moviesWatched: MovieWatched =
+      await this.userRepository.getAllWatchedMovies({
+        userId: data.userId,
+        page: data.page,
+      });
 
     return moviesWatched;
   }

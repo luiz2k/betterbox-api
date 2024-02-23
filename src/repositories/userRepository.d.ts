@@ -1,6 +1,6 @@
 import {
   user as User,
-  movieWatched as MovieWatched,
+  movieWatched,
   favoriteMovie as FavoriteMovie,
 } from '@prisma/client';
 
@@ -11,6 +11,14 @@ export type UpdateUserData = {
   password?: string;
   picture?: string | null;
   bio?: string | null;
+};
+
+export type MovieWatched = movieWatched & { page: number };
+
+export type GetAllWatchedMoviesReturn = {
+  currentPage: number;
+  totalPages: number;
+  data: ?movieWatched[];
 };
 
 export type Pagination = {
