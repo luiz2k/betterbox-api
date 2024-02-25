@@ -5,6 +5,7 @@ export type GetUserById = {
 };
 
 export type GetUserByIdReturn = {
+  id: number;
   username: string;
   picture: string | null;
   bio: string | null;

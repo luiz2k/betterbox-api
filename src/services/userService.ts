@@ -57,6 +57,7 @@ export default class UserService {
     if (!getUser) throw new Error('Perfil do usuário não encontrado.');
 
     return {
+      id: getUser.id,
       username: getUser.username,
       picture: getUser.picture,
       bio: getUser.bio,
