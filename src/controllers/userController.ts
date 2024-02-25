@@ -195,8 +195,6 @@ export default class UserController {
           page,
         });
 
-      console.log(favoriteMovies);
-
       return res.status(200).send({
         status: 'success',
         message: `Todos os filmes favoritados pelo usuário.`,
