@@ -56,15 +56,20 @@ export default class UserController {
         username: newUsername,
       });
 
-      return res
-        .status(200)
-        .send(`Nome de usuário alterado para ${newUsername}.`);
+      return res.status(200).send({
+        status: 'success',
+        message: `Nome de usuário alterado para ${newUsername}.`,
+      });
     } catch (error) {
       console.error(error);
 
       return error instanceof Error
-        ? res.status(400).send({ error: 'Erro interno do servidor.' })
-        : res.status(400).send({ error: 'Erro interno do servidor.' });
+        ? res
+            .status(400)
+            .send({ status: 'error', message: 'Erro interno do servidor.' })
+        : res
+            .status(400)
+            .send({ status: 'error', message: 'Erro interno do servidor.' });
     }
   }
 
@@ -88,13 +93,19 @@ export default class UserController {
         newEmail,
       });
 
-      return res.status(200).send('Email alterado com sucesso!');
+      return res
+        .status(200)
+        .send({ status: 'success', message: 'Email alterado com sucesso!' });
     } catch (error) {
       console.error(error);
 
       return error instanceof Error
-        ? res.status(400).send({ error: 'Erro interno do servidor.' })
-        : res.status(400).send({ error: 'Erro interno do servidor.' });
+        ? res
+            .status(400)
+            .send({ status: 'error', message: 'Erro interno do servidor.' })
+        : res
+            .status(400)
+            .send({ status: 'error', message: 'Erro interno do servidor.' });
     }
   }
 
@@ -118,13 +129,19 @@ export default class UserController {
         newPassword,
       });
 
-      return res.status(200).send('Senha alterada com sucesso!');
+      return res
+        .status(200)
+        .send({ status: 'success', message: 'Senha alterada com sucesso!' });
     } catch (error) {
       console.error(error);
 
       return error instanceof Error
-        ? res.status(400).send({ error: 'Erro interno do servidor.' })
-        : res.status(400).send({ error: 'Erro interno do servidor.' });
+        ? res
+            .status(400)
+            .send({ status: 'error', message: 'Erro interno do servidor.' })
+        : res
+            .status(400)
+            .send({ status: 'error', message: 'Erro interno do servidor.' });
     }
   }
 
@@ -139,13 +156,19 @@ export default class UserController {
         password,
       });
 
-      return res.status(200).send('Conta excluída com sucesso!');
+      return res
+        .status(200)
+        .send({ status: 'success', message: 'Conta excluída com sucesso!' });
     } catch (error) {
       console.error(error);
 
       return error instanceof Error
-        ? res.status(400).send({ error: 'Erro interno do servidor.' })
-        : res.status(400).send({ error: 'Erro interno do servidor.' });
+        ? res
+            .status(400)
+            .send({ status: 'error', message: 'Erro interno do servidor.' })
+        : res
+            .status(400)
+            .send({ status: 'error', message: 'Erro interno do servidor.' });
     }
   }
 
