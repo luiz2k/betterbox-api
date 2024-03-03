@@ -1,5 +1,6 @@
 import express, { Application } from 'express';
 import Routes from './routes/routes';
+import cors from 'cors';
 
 export default class App {
   private app: Application;
@@ -15,6 +16,7 @@ export default class App {
   }
 
   private config(): void {
+    this.app.use(cors({ origin: process.env.CORS_ACCESS }));
     this.app.use(express.json());
   }
 
