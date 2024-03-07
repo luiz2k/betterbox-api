@@ -78,7 +78,15 @@ export default class AuthService {
 
     const tokens = await this.generateTokens(user.id);
 
-    return tokens;
+    return {
+      ...tokens,
+      user: {
+        id: user.id,
+        username: user.username,
+        picture: user.picture,
+        bio: user.bio,
+      },
+    };
   }
 
   public async signUp(data: SignUp): Promise<SignUpReturn> {

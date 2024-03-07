@@ -60,7 +60,12 @@ class AuthService {
             if (!comparePasswords)
                 throw new Error('Senha inválida.');
             const tokens = yield this.generateTokens(user.id);
-            return tokens;
+            return Object.assign(Object.assign({}, tokens), { user: {
+                    id: user.id,
+                    username: user.username,
+                    picture: user.picture,
+                    bio: user.bio,
+                } });
         });
     }
     signUp(data) {
