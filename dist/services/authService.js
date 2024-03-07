@@ -82,7 +82,12 @@ class AuthService {
                 password: hashPassword,
             });
             const tokens = yield this.generateTokens(createUser.id);
-            return tokens;
+            return Object.assign(Object.assign({}, tokens), { user: {
+                    id: createUser.id,
+                    username: createUser.username,
+                    picture: createUser.picture,
+                    bio: createUser.bio,
+                } });
         });
     }
     refreshToken(data) {

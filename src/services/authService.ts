@@ -12,6 +12,7 @@ import type {
   GetRevokedToken,
   GetRefreshToken,
   Decoded,
+  AccessAndRefreshToken,
 } from './authService.d';
 
 import AuthRepository from '../repositories/authRepository';
@@ -104,9 +105,19 @@ export default class AuthService {
       password: hashPassword,
     });
 
-    const tokens = await this.generateTokens(createUser.id);
+    const tokens: AccessAndRefreshToken = await this.generateTokens(
+      createUser.id,
+    );
 
-    return tokens;
+    return {
+      ...tokens,
+      user: {
+        id: createUser.id,
+        username: createUser.username,
+        picture: createUser.picture,
+        bio: createUser.bio,
+      },
+    };
   }
 
   public async refreshToken(data: RefreshToken): Promise<RefreshTokenReturn> {

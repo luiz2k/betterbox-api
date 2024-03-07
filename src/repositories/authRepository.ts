@@ -10,12 +10,10 @@ export default class AuthRepository {
 
   public async createUser(
     data: Omit<User, 'id' | 'picture' | 'bio'>,
-  ): Promise<
-    Omit<User, 'username' | 'email' | 'password' | 'picture' | 'bio'>
-  > {
+  ): Promise<Omit<User, 'email' | 'password'>> {
     return await prisma.user.create({
       data: { ...data },
-      select: { id: true },
+      select: { id: true, username: true, picture: true, bio: true },
     });
   }
 }
