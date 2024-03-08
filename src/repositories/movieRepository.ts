@@ -93,6 +93,14 @@ export default class MovieRepository {
     });
   }
 
+  public async getAllComments(
+    data: Omit<MovieComment, 'userId' | 'comment' | 'commentedAt' | 'editedAt'>,
+  ) {
+    return await prisma.movieComment.findMany({
+      where: { movieId: data.movieId },
+    });
+  }
+
   public async createComment(
     data: Omit<MovieComment, 'editedAt'>,
   ): Promise<void> {

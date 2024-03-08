@@ -13,7 +13,12 @@ import type {
   DeleteComment,
   GetMovieWatched,
   GetFavoriteMovie,
+  MovieComments,
 } from './movieService.d';
+
+type GetAllComments = {
+  movieId: number;
+};
 
 export default class MovieService {
   private movieRepository: MovieRepository;
@@ -102,6 +107,12 @@ export default class MovieService {
 
     if (!movieFavorite)
       throw new Error('O filme informado não está na lista de favoritos.');
+  }
+
+  public async getAllComments(data: GetAllComments): Promise<MovieComments[]> {
+    return await this.movieRepository.getAllComments({
+      movieId: data.movieId,
+    });
   }
 
   public async createComment(data: CreateComment): Promise<void> {

@@ -6,6 +6,7 @@ import type {
   CreateCommentBody,
   EditCommentBody,
   Movie,
+  MovieComments,
 } from './movieController.d';
 
 import {
@@ -165,6 +166,33 @@ export default class MovieController {
       return res.status(200).send({
         status: 'success',
         message: `O filme ${movie.name} está na lista de favoritos.`,
+      });
+    } catch (error) {
+      console.error(error);
+
+      return error instanceof Error
+        ? res
+            .status(400)
+            .send({ status: 'error', message: 'Erro interno do servidor.' })
+        : res
+            .status(400)
+            .send({ status: 'error', message: 'Erro interno do servidor.' });
+    }
+  }
+
+  public async getAllComments(req: Request, res: Response): Promise<Response> {
+    const movie: Movie = req.movie;
+
+    try {
+      const movieComments: MovieComments[] =
+        await this.movieService.getAllComments({
+          movieId: movie.id,
+        });
+
+      return res.status(201).send({
+        status: 'success',
+        message: `Obteve todos os comentários do filme ${movie.name}.`,
+        data: [...movieComments],
       });
     } catch (error) {
       console.error(error);

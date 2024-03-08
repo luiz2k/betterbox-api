@@ -1,3 +1,7 @@
+import { movieComment } from '@prisma/client';
+
+export type MovieComments = movieComment;
+
 export type CreateCommentBody = {
   comment: string;
 };
