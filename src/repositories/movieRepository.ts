@@ -1,7 +1,12 @@
 import { favoriteMovie } from '@prisma/client';
 import prisma from '../database/database';
 
-import type { Movie, MovieComment, MovieWatched } from './movieRepository.d';
+import type {
+  GetAllComments,
+  Movie,
+  MovieComment,
+  MovieWatched,
+} from './movieRepository.d';
 
 export default class MovieRepository {
   public async getMovieById(data: Omit<Movie, 'name'>): Promise<Movie | null> {
@@ -95,9 +100,21 @@ export default class MovieRepository {
 
   public async getAllComments(
     data: Omit<MovieComment, 'userId' | 'comment' | 'commentedAt' | 'editedAt'>,
-  ) {
+  ): Promise<GetAllComments[]> {
     return await prisma.movieComment.findMany({
       where: { movieId: data.movieId },
+      select: {
+        comment: true,
+        commentedAt: true,
+        editedAt: true,
+        user: {
+          select: {
+            id: true,
+            username: true,
+            picture: true,
+          },
+        },
+      },
     });
   }
 

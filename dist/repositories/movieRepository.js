@@ -102,6 +102,25 @@ class MovieRepository {
             });
         });
     }
+    getAllComments(data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield database_1.default.movieComment.findMany({
+                where: { movieId: data.movieId },
+                select: {
+                    comment: true,
+                    commentedAt: true,
+                    editedAt: true,
+                    user: {
+                        select: {
+                            id: true,
+                            username: true,
+                            picture: true,
+                        },
+                    },
+                },
+            });
+        });
+    }
     createComment(data) {
         return __awaiter(this, void 0, void 0, function* () {
             yield database_1.default.movieComment.create({

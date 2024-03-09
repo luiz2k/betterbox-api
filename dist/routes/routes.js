@@ -21,9 +21,7 @@ class Routes {
     }
     routes() {
         this.router.use('/auth', this.authRoute.router);
-        this.router.use(this.userAuthentication.verifyAuthentication);
         this.router.use('/user', this.userRoute.router);
-        this.router.use(this.createMovie.verifyMovie);
         this.router.use('/movie', this.movieRoute.router);
     }
 }

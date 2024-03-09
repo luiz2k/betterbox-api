@@ -1,6 +1,13 @@
-import { movieComment } from '@prisma/client';
-
-export type MovieComments = movieComment;
+export type MovieComments = {
+  comment: string;
+  commentedAt: Date;
+  editedAt: Date | null;
+  user: {
+    id: number;
+    username: string;
+    picture: string | null;
+  };
+};
 
 export type AddToWatched = {
   id: number;

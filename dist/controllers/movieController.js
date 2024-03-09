@@ -157,6 +157,31 @@ class MovieController {
             }
         });
     }
+    getAllComments(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const movie = req.movie;
+            try {
+                const movieComments = yield this.movieService.getAllComments({
+                    movieId: movie.id,
+                });
+                return res.status(201).send({
+                    status: 'success',
+                    message: `Obteve todos os comentários do filme ${movie.name}.`,
+                    data: [...movieComments],
+                });
+            }
+            catch (error) {
+                console.error(error);
+                return error instanceof Error
+                    ? res
+                        .status(400)
+                        .send({ status: 'error', message: 'Erro interno do servidor.' })
+                    : res
+                        .status(400)
+                        .send({ status: 'error', message: 'Erro interno do servidor.' });
+            }
+        });
+    }
     createComment(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { comment } = req.body;

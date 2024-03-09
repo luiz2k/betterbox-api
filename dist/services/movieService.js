@@ -90,6 +90,14 @@ class MovieService {
                 throw new Error('O filme informado não está na lista de favoritos.');
         });
     }
+    getAllComments(data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const comments = yield this.movieRepository.getAllComments({
+                movieId: data.movieId,
+            });
+            return comments;
+        });
+    }
     createComment(data) {
         return __awaiter(this, void 0, void 0, function* () {
             const comment = yield this.movieRepository.getCommentById({

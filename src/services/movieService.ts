@@ -110,9 +110,11 @@ export default class MovieService {
   }
 
   public async getAllComments(data: GetAllComments): Promise<MovieComments[]> {
-    return await this.movieRepository.getAllComments({
+    const comments = await this.movieRepository.getAllComments({
       movieId: data.movieId,
     });
+
+    return comments;
   }
 
   public async createComment(data: CreateComment): Promise<void> {
