@@ -64,4 +64,13 @@ export type FavoriteMovie = {
   data: ?favoriteMovie[];
 };
 
+export type ChangePicture = {
+  userId: number;
+  fileName: string;
+};
+
+export type DeletePicture = GetUserById;
+
+export type GetPicture = GetUserById;
+
 export { User };

@@ -1,6 +1,8 @@
 import UserRepository from '../repositories/userRepository';
 import bcrypt from 'bcryptjs';
 
+import { readFileSync, unlinkSync } from 'fs';
+
 import type {
   ChangeUsername,
   GetUserById,
@@ -14,6 +16,9 @@ import type {
   GetAllWatchedMovies,
   GetAllFavoriteMovies,
   FavoriteMovie,
+  GetPicture,
+  ChangePicture,
+  DeletePicture,
 } from './userService.d';
 
 export default class UserService {
@@ -124,6 +129,44 @@ export default class UserService {
       id: data.id,
       password: hashPassword,
     });
+  }
+
+  public async getPicture(data: GetPicture): Promise<Buffer> {
+    const user: User | null = await this.userRepository.getUserDataById({
+      id: data.id,
+    });
+
+    if (!user?.picture)
+      throw new Error('Esse usuário não possui uma foto de perfil.');
+
+    const imageRoute: string = `public\\uploads\\users\\${user?.picture}`;
+
+    return readFileSync(imageRoute);
+  }
+
+  public async changePicture(data: ChangePicture): Promise<void> {
+    await this.userRepository.updateUserData({
+      id: data.userId,
+      picture: data.fileName,
+    });
+  }
+
+  public async deletePicture(data: DeletePicture): Promise<void> {
+    const user: User | null = await this.userRepository.getUserDataById({
+      id: data.id,
+    });
+
+    if (!user?.picture)
+      throw new Error('Esse usuário já não possui uma foto de perfil.');
+
+    await this.userRepository.updateUserData({
+      id: user.id,
+      picture: null,
+    });
+
+    const imageRoute: string = `public\\uploads\\users\\${user.id}.jpg`;
+
+    unlinkSync(imageRoute);
   }
 
   public async deleteAccount(data: DeleteAccount): Promise<void> {

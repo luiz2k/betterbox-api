@@ -145,6 +145,83 @@ export default class UserController {
     }
   }
 
+  async getPicture(req: Request, res: Response): Promise<Response> {
+    const userId = req.userId;
+
+    try {
+      const picture: Buffer = await this.userService.getPicture({ id: userId });
+
+      return res
+        .status(200)
+        .setHeader('Content-Type', 'image/jpg')
+        .end(picture);
+    } catch (error) {
+      console.error(error);
+
+      return error instanceof Error
+        ? res
+            .status(400)
+            .send({ status: 'error', message: 'Erro interno do servidor.' })
+        : res
+            .status(400)
+            .send({ status: 'error', message: 'Erro interno do servidor.' });
+    }
+  }
+
+  async changePicture(req: Request, res: Response): Promise<Response> {
+    const userId = req.userId;
+    const file = req.file;
+
+    try {
+      if (!file) throw new Error('Nenhuma imagem foi enviada');
+
+      await this.userService.changePicture({
+        userId,
+        fileName: file?.filename,
+      });
+
+      return res.status(200).send({
+        status: 'success',
+        message: 'Foto de perfil alterada com sucesso!',
+      });
+    } catch (error) {
+      console.error(error);
+
+      return error instanceof Error
+        ? res
+            .status(400)
+            .send({ status: 'error', message: 'Erro interno do servidor.' })
+        : res
+            .status(400)
+            .send({ status: 'error', message: 'Erro interno do servidor.' });
+    }
+  }
+
+  async deletePicture(req: Request, res: Response): Promise<Response> {
+    const userId = req.userId;
+
+    try {
+      await this.userService.deletePicture({
+        id: userId,
+      });
+
+      return res.status(200).send({
+        status: 'success',
+        message: 'Foto de perfil deletada com sucesso!',
+      });
+    } catch (error) {
+      console.error(error);
+
+      return error instanceof Error
+        ? res
+            .status(400)
+            .send({ status: 'error', message: 'Erro interno do servidor.' })
+        : res
+            .status(400)
+            .send({ status: 'error', message: 'Erro interno do servidor.' });
+    }
+  }
+
   async deleteAccount(req: Request, res: Response): Promise<Response> {
     const { email, password }: DeleteAccountBody = req.body;
     const userId: number = req.userId;
