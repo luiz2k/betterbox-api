@@ -175,15 +175,15 @@ export default class UserController {
     try {
       if (!file) throw new Error('Nenhuma imagem foi enviada');
 
-      await this.userService.changePicture({
+      const picture: Buffer = await this.userService.changePicture({
         userId,
         fileName: file?.filename,
       });
 
-      return res.status(200).send({
-        status: 'success',
-        message: 'Foto de perfil alterada com sucesso!',
-      });
+      return res
+        .status(200)
+        .setHeader('Content-Type', 'image/jpg')
+        .send(picture);
     } catch (error) {
       console.error(error);
 

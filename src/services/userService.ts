@@ -144,11 +144,15 @@ export default class UserService {
     return readFileSync(imageRoute);
   }
 
-  public async changePicture(data: ChangePicture): Promise<void> {
+  public async changePicture(data: ChangePicture) {
     await this.userRepository.updateUserData({
       id: data.userId,
       picture: data.fileName,
     });
+
+    const imageRoute: string = `public\\uploads\\users\\${data.fileName}`;
+
+    return readFileSync(imageRoute);
   }
 
   public async deletePicture(data: DeletePicture): Promise<void> {
