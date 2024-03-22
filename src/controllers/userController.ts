@@ -168,6 +168,29 @@ export default class UserController {
     }
   }
 
+  async getPictureById(req: Request, res: Response): Promise<Response> {
+    const { userId } = req.body;
+
+    try {
+      const picture: Buffer = await this.userService.getPicture({ id: userId });
+
+      return res
+        .status(200)
+        .setHeader('Content-Type', 'image/jpg')
+        .end(picture);
+    } catch (error) {
+      console.error(error);
+
+      return error instanceof Error
+        ? res
+            .status(400)
+            .send({ status: 'error', message: 'Erro interno do servidor.' })
+        : res
+            .status(400)
+            .send({ status: 'error', message: 'Erro interno do servidor.' });
+    }
+  }
+
   async changePicture(req: Request, res: Response): Promise<Response> {
     const userId = req.userId;
     const file = req.file;

@@ -20,6 +20,11 @@ export default class UserRoute {
   }
 
   private routes(): void {
+    this.router.post(
+      '/getPictureById',
+      this.UserController.getPictureById.bind(this.UserController),
+    );
+
     this.router.use(this.userAuthentication.verifyAuthentication);
 
     this.router.get(
