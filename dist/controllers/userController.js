@@ -132,6 +132,102 @@ class UserController {
             }
         });
     }
+    getPicture(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const userId = req.userId;
+            try {
+                const picture = yield this.userService.getPicture({ id: userId });
+                return res
+                    .status(200)
+                    .setHeader('Content-Type', 'image/jpg')
+                    .end(picture);
+            }
+            catch (error) {
+                console.error(error);
+                return error instanceof Error
+                    ? res
+                        .status(400)
+                        .send({ status: 'error', message: 'Erro interno do servidor.' })
+                    : res
+                        .status(400)
+                        .send({ status: 'error', message: 'Erro interno do servidor.' });
+            }
+        });
+    }
+    getPictureById(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { userId } = req.body;
+            try {
+                const picture = yield this.userService.getPicture({ id: userId });
+                return res
+                    .status(200)
+                    .setHeader('Content-Type', 'image/jpg')
+                    .end(picture);
+            }
+            catch (error) {
+                console.error(error);
+                return error instanceof Error
+                    ? res
+                        .status(400)
+                        .send({ status: 'error', message: 'Erro interno do servidor.' })
+                    : res
+                        .status(400)
+                        .send({ status: 'error', message: 'Erro interno do servidor.' });
+            }
+        });
+    }
+    changePicture(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const userId = req.userId;
+            const file = req.file;
+            try {
+                if (!file)
+                    throw new Error('Nenhuma imagem foi enviada');
+                const picture = yield this.userService.changePicture({
+                    userId,
+                    fileName: file === null || file === void 0 ? void 0 : file.filename,
+                });
+                return res
+                    .status(200)
+                    .setHeader('Content-Type', 'image/jpg')
+                    .send(picture);
+            }
+            catch (error) {
+                console.error(error);
+                return error instanceof Error
+                    ? res
+                        .status(400)
+                        .send({ status: 'error', message: 'Erro interno do servidor.' })
+                    : res
+                        .status(400)
+                        .send({ status: 'error', message: 'Erro interno do servidor.' });
+            }
+        });
+    }
+    deletePicture(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const userId = req.userId;
+            try {
+                yield this.userService.deletePicture({
+                    id: userId,
+                });
+                return res.status(200).send({
+                    status: 'success',
+                    message: 'Foto de perfil deletada com sucesso!',
+                });
+            }
+            catch (error) {
+                console.error(error);
+                return error instanceof Error
+                    ? res
+                        .status(400)
+                        .send({ status: 'error', message: 'Erro interno do servidor.' })
+                    : res
+                        .status(400)
+                        .send({ status: 'error', message: 'Erro interno do servidor.' });
+            }
+        });
+    }
     deleteAccount(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { email, password } = req.body;

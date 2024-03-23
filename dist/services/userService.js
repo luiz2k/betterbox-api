@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const userRepository_1 = __importDefault(require("../repositories/userRepository"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const fs_1 = require("fs");
 class UserService {
     constructor() {
         this.userRepository = new userRepository_1.default();
@@ -99,6 +100,42 @@ class UserService {
                 id: data.id,
                 password: hashPassword,
             });
+        });
+    }
+    getPicture(data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = yield this.userRepository.getUserDataById({
+                id: data.id,
+            });
+            if (!(user === null || user === void 0 ? void 0 : user.picture))
+                throw new Error('Esse usuário não possui uma foto de perfil.');
+            const imageRoute = `public\\uploads\\users\\${user === null || user === void 0 ? void 0 : user.picture}`;
+            return (0, fs_1.readFileSync)(imageRoute);
+        });
+    }
+    changePicture(data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.userRepository.updateUserData({
+                id: data.userId,
+                picture: data.fileName,
+            });
+            const imageRoute = `public\\uploads\\users\\${data.fileName}`;
+            return (0, fs_1.readFileSync)(imageRoute);
+        });
+    }
+    deletePicture(data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = yield this.userRepository.getUserDataById({
+                id: data.id,
+            });
+            if (!(user === null || user === void 0 ? void 0 : user.picture))
+                throw new Error('Esse usuário já não possui uma foto de perfil.');
+            yield this.userRepository.updateUserData({
+                id: user.id,
+                picture: null,
+            });
+            const imageRoute = `public\\uploads\\users\\${user.id}.jpg`;
+            (0, fs_1.unlinkSync)(imageRoute);
         });
     }
     deleteAccount(data) {
