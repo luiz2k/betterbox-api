@@ -66,7 +66,7 @@ export type FavoriteMovie = {
 
 export type ChangePicture = {
   userId: number;
-  fileName: string;
+  imageData: string;
 };
 
 export type DeletePicture = GetUserById;

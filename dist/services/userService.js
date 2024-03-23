@@ -14,7 +14,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const userRepository_1 = __importDefault(require("../repositories/userRepository"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
-const fs_1 = require("fs");
 class UserService {
     constructor() {
         this.userRepository = new userRepository_1.default();
@@ -107,20 +106,29 @@ class UserService {
             const user = yield this.userRepository.getUserDataById({
                 id: data.id,
             });
-            if (!(user === null || user === void 0 ? void 0 : user.picture))
-                throw new Error('Esse usuário não possui uma foto de perfil.');
-            const imageRoute = `public\\uploads\\users\\${user === null || user === void 0 ? void 0 : user.picture}`;
-            return (0, fs_1.readFileSync)(imageRoute);
+            /* if (!user?.picture)
+              throw new Error('Esse usuário não possui uma foto de perfil.'); */
+            return user === null || user === void 0 ? void 0 : user.picture;
         });
     }
     changePicture(data) {
         return __awaiter(this, void 0, void 0, function* () {
+            const formData = new FormData();
+            formData.append('image', data.imageData);
+            const response = yield fetch('https://api.imgur.com/3/image', {
+                method: 'POST',
+                headers: {
+                    Authorization: `Client-ID c6a5a73a3d14939`,
+                },
+                body: formData,
+            });
+            const responseData = yield response.json();
+            const imageLink = responseData.data.link;
             yield this.userRepository.updateUserData({
                 id: data.userId,
-                picture: data.fileName,
+                picture: imageLink,
             });
-            const imageRoute = `public\\uploads\\users\\${data.fileName}`;
-            return (0, fs_1.readFileSync)(imageRoute);
+            return imageLink;
         });
     }
     deletePicture(data) {
@@ -134,8 +142,6 @@ class UserService {
                 id: user.id,
                 picture: null,
             });
-            const imageRoute = `public\\uploads\\users\\${user.id}.jpg`;
-            (0, fs_1.unlinkSync)(imageRoute);
         });
     }
     deleteAccount(data) {

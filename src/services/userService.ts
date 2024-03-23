@@ -1,8 +1,6 @@
 import UserRepository from '../repositories/userRepository';
 import bcrypt from 'bcryptjs';
 
-import { readFileSync, unlinkSync } from 'fs';
-
 import type {
   ChangeUsername,
   GetUserById,
@@ -131,28 +129,35 @@ export default class UserService {
     });
   }
 
-  public async getPicture(data: GetPicture): Promise<Buffer> {
+  public async getPicture(data: GetPicture) {
     const user: User | null = await this.userRepository.getUserDataById({
       id: data.id,
     });
 
-    if (!user?.picture)
-      throw new Error('Esse usuário não possui uma foto de perfil.');
-
-    const imageRoute: string = `public\\uploads\\users\\${user?.picture}`;
-
-    return readFileSync(imageRoute);
+    return user?.picture;
   }
 
   public async changePicture(data: ChangePicture) {
-    await this.userRepository.updateUserData({
-      id: data.userId,
-      picture: data.fileName,
+    const formData = new FormData();
+    formData.append('image', data.imageData);
+
+    const response = await fetch('https://api.imgur.com/3/image', {
+      method: 'POST',
+      headers: {
+        Authorization: `Client-ID c6a5a73a3d14939`,
+      },
+      body: formData,
     });
 
-    const imageRoute: string = `public\\uploads\\users\\${data.fileName}`;
+    const responseData = await response.json();
+    const imageLink = responseData.data.link;
 
-    return readFileSync(imageRoute);
+    await this.userRepository.updateUserData({
+      id: data.userId,
+      picture: imageLink,
+    });
+
+    return imageLink;
   }
 
   public async deletePicture(data: DeletePicture): Promise<void> {
@@ -167,10 +172,6 @@ export default class UserService {
       id: user.id,
       picture: null,
     });
-
-    const imageRoute: string = `public\\uploads\\users\\${user.id}.jpg`;
-
-    unlinkSync(imageRoute);
   }
 
   public async deleteAccount(data: DeleteAccount): Promise<void> {

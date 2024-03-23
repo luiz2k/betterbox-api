@@ -149,12 +149,9 @@ export default class UserController {
     const userId = req.userId;
 
     try {
-      const picture: Buffer = await this.userService.getPicture({ id: userId });
+      const picture = await this.userService.getPicture({ id: userId });
 
-      return res
-        .status(200)
-        .setHeader('Content-Type', 'image/jpg')
-        .end(picture);
+      return res.status(200).json({ picture });
     } catch (error) {
       console.error(error);
 
@@ -172,12 +169,9 @@ export default class UserController {
     const { userId } = req.body;
 
     try {
-      const picture: Buffer = await this.userService.getPicture({ id: userId });
+      const picture = await this.userService.getPicture({ id: userId });
 
-      return res
-        .status(200)
-        .setHeader('Content-Type', 'image/jpg')
-        .end(picture);
+      return res.status(200).json({ picture });
     } catch (error) {
       console.error(error);
 
@@ -193,20 +187,17 @@ export default class UserController {
 
   async changePicture(req: Request, res: Response): Promise<Response> {
     const userId = req.userId;
-    const file = req.file;
+    const imageData = req.file?.buffer.toString('base64');
 
     try {
-      if (!file) throw new Error('Nenhuma imagem foi enviada');
+      if (!imageData) throw new Error('Nenhuma imagem foi enviada');
 
-      const picture: Buffer = await this.userService.changePicture({
+      const picture = await this.userService.changePicture({
         userId,
-        fileName: file?.filename,
+        imageData: imageData,
       });
 
-      return res
-        .status(200)
-        .setHeader('Content-Type', 'image/jpg')
-        .send(picture);
+      return res.status(200).json({ picture });
     } catch (error) {
       console.error(error);
 

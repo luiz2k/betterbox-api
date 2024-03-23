@@ -7,15 +7,16 @@ const multer_1 = __importDefault(require("multer"));
 class ImageUploader {
     constructor() {
         this.upload = (0, multer_1.default)({
-            storage: multer_1.default.diskStorage({
-                destination: (req, file, cb) => {
-                    cb(null, './public/uploads/users');
-                },
-                filename: (req, file, cb) => {
-                    const userId = req.userId;
-                    cb(null, `${userId}.jpg`);
-                },
-            }),
+            /* storage: multer.diskStorage({
+              destination: (req, file, cb) => {
+                cb(null, './public/uploads/users');
+              },
+              filename: (req, file, cb) => {
+                const userId: number = req.userId;
+      
+                cb(null, `${userId}.jpg`);
+              },
+            }), */
             fileFilter: (req, file, cb) => {
                 const fileType = [
                     'image/png',

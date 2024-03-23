@@ -5,7 +5,7 @@ export default class ImageUploader {
 
   constructor() {
     this.upload = multer({
-      storage: multer.diskStorage({
+      /* storage: multer.diskStorage({
         destination: (req, file, cb) => {
           cb(null, './public/uploads/users');
         },
@@ -14,7 +14,7 @@ export default class ImageUploader {
 
           cb(null, `${userId}.jpg`);
         },
-      }),
+      }), */
       fileFilter: (req, file, cb) => {
         const fileType: string | undefined = [
           'image/png',

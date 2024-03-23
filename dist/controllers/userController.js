@@ -137,10 +137,7 @@ class UserController {
             const userId = req.userId;
             try {
                 const picture = yield this.userService.getPicture({ id: userId });
-                return res
-                    .status(200)
-                    .setHeader('Content-Type', 'image/jpg')
-                    .end(picture);
+                return res.status(200).json({ picture });
             }
             catch (error) {
                 console.error(error);
@@ -159,10 +156,7 @@ class UserController {
             const { userId } = req.body;
             try {
                 const picture = yield this.userService.getPicture({ id: userId });
-                return res
-                    .status(200)
-                    .setHeader('Content-Type', 'image/jpg')
-                    .end(picture);
+                return res.status(200).json({ picture });
             }
             catch (error) {
                 console.error(error);
@@ -177,20 +171,18 @@ class UserController {
         });
     }
     changePicture(req, res) {
+        var _a;
         return __awaiter(this, void 0, void 0, function* () {
             const userId = req.userId;
-            const file = req.file;
+            const imageData = (_a = req.file) === null || _a === void 0 ? void 0 : _a.buffer.toString('base64');
             try {
-                if (!file)
+                if (!imageData)
                     throw new Error('Nenhuma imagem foi enviada');
                 const picture = yield this.userService.changePicture({
                     userId,
-                    fileName: file === null || file === void 0 ? void 0 : file.filename,
+                    imageData: imageData,
                 });
-                return res
-                    .status(200)
-                    .setHeader('Content-Type', 'image/jpg')
-                    .send(picture);
+                return res.status(200).json({ picture });
             }
             catch (error) {
                 console.error(error);
