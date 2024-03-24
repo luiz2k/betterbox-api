@@ -106,8 +106,6 @@ class UserService {
             const user = yield this.userRepository.getUserDataById({
                 id: data.id,
             });
-            /* if (!user?.picture)
-              throw new Error('Esse usuário não possui uma foto de perfil.'); */
             return user === null || user === void 0 ? void 0 : user.picture;
         });
     }
