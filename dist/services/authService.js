@@ -63,8 +63,6 @@ class AuthService {
             return Object.assign(Object.assign({}, tokens), { user: {
                     id: user.id,
                     username: user.username,
-                    picture: user.picture,
-                    bio: user.bio,
                 } });
         });
     }
@@ -85,8 +83,6 @@ class AuthService {
             return Object.assign(Object.assign({}, tokens), { user: {
                     id: createUser.id,
                     username: createUser.username,
-                    picture: createUser.picture,
-                    bio: createUser.bio,
                 } });
         });
     }

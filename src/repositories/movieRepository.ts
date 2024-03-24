@@ -111,7 +111,6 @@ export default class MovieRepository {
           select: {
             id: true,
             username: true,
-            picture: true,
           },
         },
       },

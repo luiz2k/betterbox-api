@@ -84,8 +84,6 @@ export default class AuthService {
       user: {
         id: user.id,
         username: user.username,
-        picture: user.picture,
-        bio: user.bio,
       },
     };
   }
@@ -114,8 +112,6 @@ export default class AuthService {
       user: {
         id: createUser.id,
         username: createUser.username,
-        picture: createUser.picture,
-        bio: createUser.bio,
       },
     };
   }

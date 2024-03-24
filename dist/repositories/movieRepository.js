@@ -114,7 +114,6 @@ class MovieRepository {
                         select: {
                             id: true,
                             username: true,
-                            picture: true,
                         },
                     },
                 },

@@ -14,8 +14,6 @@ export type UserData = {
   username: string;
   email: string;
   password: string;
-  picture: string | null;
-  bio: string | null;
 };
 
 export { RefreshToken, RevokedToken };

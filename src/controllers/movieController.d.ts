@@ -5,7 +5,6 @@ export type MovieComments = {
   user: {
     id: number;
     username: string;
-    picture: string | null;
   };
 };
 

@@ -5,8 +5,6 @@ export type UpdateUserData = {
   username?: string;
   email?: string;
   password?: string;
-  picture?: string | null;
-  bio?: string | null;
 };
 
 export type MovieWatched = movieWatched & { page: number };

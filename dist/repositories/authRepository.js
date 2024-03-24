@@ -23,7 +23,7 @@ class AuthRepository {
         return __awaiter(this, void 0, void 0, function* () {
             return yield database_1.default.user.create({
                 data: Object.assign({}, data),
-                select: { id: true, username: true, picture: true, bio: true },
+                select: { id: true, username: true },
             });
         });
     }

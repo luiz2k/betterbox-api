@@ -12,7 +12,6 @@ export type GetAllComments = {
   user: {
     id: number;
     username: string;
-    picture: string | null;
   };
 };
 

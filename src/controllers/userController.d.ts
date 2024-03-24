@@ -3,8 +3,6 @@ import { favoriteMovie, movieWatched } from '@prisma/client';
 export type GetUser = {
   id: number;
   username: string;
-  picture: string | null;
-  bio: string | null;
 };
 
 export type ChangeUsernameBody = {

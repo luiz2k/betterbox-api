@@ -22,13 +22,13 @@ export default class UserRepository {
   }
 
   async getUserDataById(
-    data: Omit<User, 'username' | 'email' | 'password' | 'picture' | 'bio'>,
+    data: Omit<User, 'username' | 'email' | 'password'>,
   ): Promise<User | null> {
     return await prisma.user.findUnique({ where: { id: data.id } });
   }
 
   async getUserDataByEmail(
-    data: Omit<User, 'id' | 'username' | 'password' | 'picture' | 'bio'>,
+    data: Omit<User, 'id' | 'username' | 'password'>,
   ): Promise<User | null> {
     return await prisma.user.findUnique({ where: { email: data.email } });
   }
@@ -38,7 +38,7 @@ export default class UserRepository {
   }
 
   async deleteAccount(
-    data: Omit<User, 'username' | 'password' | 'picture' | 'bio'>,
+    data: Omit<User, 'username' | 'password'>,
   ): Promise<void> {
     await prisma.user.delete({ where: { id: data.id, email: data.email } });
   }

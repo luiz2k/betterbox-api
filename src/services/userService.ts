@@ -1,6 +1,5 @@
 import UserRepository from '../repositories/userRepository';
 import bcrypt from 'bcryptjs';
-import { ImgurClient } from 'imgur';
 
 import type {
   ChangeUsername,
@@ -15,18 +14,13 @@ import type {
   GetAllWatchedMovies,
   GetAllFavoriteMovies,
   FavoriteMovie,
-  GetPicture,
-  ChangePicture,
-  DeletePicture,
 } from './userService.d';
 
 export default class UserService {
   private userRepository: UserRepository;
-  private ImgurClient: ImgurClient;
 
   constructor() {
     this.userRepository = new UserRepository();
-    this.ImgurClient = new ImgurClient({ clientId: 'c6a5a73a3d14939' });
   }
 
   private async verifyEmailAndPassord(
@@ -65,8 +59,6 @@ export default class UserService {
     return {
       id: getUser.id,
       username: getUser.username,
-      picture: getUser.picture,
-      bio: getUser.bio,
     };
   }
 
@@ -129,41 +121,6 @@ export default class UserService {
     await this.userRepository.updateUserData({
       id: data.id,
       password: hashPassword,
-    });
-  }
-
-  public async getPicture(data: GetPicture) {
-    const user: User | null = await this.userRepository.getUserDataById({
-      id: data.id,
-    });
-
-    return user?.picture;
-  }
-
-  public async changePicture(data: ChangePicture) {
-    const response = await this.ImgurClient.upload({
-      image: data.imageData,
-      type: 'base64',
-    });
-
-    if (!response.success) throw new Error(JSON.stringify(response));
-
-    const imageLink: string = response.data.link;
-
-    return imageLink;
-  }
-
-  public async deletePicture(data: DeletePicture): Promise<void> {
-    const user: User | null = await this.userRepository.getUserDataById({
-      id: data.id,
-    });
-
-    if (!user?.picture)
-      throw new Error('Esse usuário já não possui uma foto de perfil.');
-
-    await this.userRepository.updateUserData({
-      id: user.id,
-      picture: null,
     });
   }
 

@@ -19,8 +19,6 @@ type SignOut = RefreshToken;
 export interface User {
   id: number;
   username: string;
-  picture: string | null;
-  bio: string | null;
   email: string;
   password: string;
 }
@@ -28,8 +26,6 @@ export interface User {
 export interface CreateUser {
   id: number;
   username: string;
-  picture: string | null;
-  bio: string | null;
 }
 
 export type GenerateTokensReturn = AccessAndRefreshToken;
@@ -38,8 +34,7 @@ export type SignInReturn = AccessAndRefreshToken & {
   user: {
     id: number;
     username: string;
-    picture: string | null;
-    bio: string | null;
+
   };
 };
 
@@ -47,8 +42,7 @@ export type SignUpReturn = AccessAndRefreshToken & {
   user: {
     id: number;
     username: string;
-    picture: string | null;
-    bio: string | null;
+
   };
 };
 

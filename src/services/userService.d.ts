@@ -7,8 +7,6 @@ export type GetUserById = {
 export type GetUserByIdReturn = {
   id: number;
   username: string;
-  picture: string | null;
-  bio: string | null;
 };
 
 export type ChangeUsername = {
@@ -63,14 +61,5 @@ export type FavoriteMovie = {
   totalPages: number;
   data: ?favoriteMovie[];
 };
-
-export type ChangePicture = {
-  userId: number;
-  imageData: string;
-};
-
-export type DeletePicture = GetUserById;
-
-export type GetPicture = GetUserById;
 
 export { User };
