@@ -151,7 +151,7 @@ export default class UserService {
 
     const responseData = await response.json();
 
-    if (!responseData.success) throw new Error(responseData);
+    if (!responseData.success) throw new Error(JSON.stringify(responseData));
 
     const imageLink: string = await responseData.data.link;
 

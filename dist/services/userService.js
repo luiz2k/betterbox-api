@@ -122,7 +122,7 @@ class UserService {
             });
             const responseData = yield response.json();
             if (!responseData.success)
-                throw new Error(responseData);
+                throw new Error(String(responseData));
             const imageLink = yield responseData.data.link;
             yield this.userRepository.updateUserData({
                 id: data.userId,
