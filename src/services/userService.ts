@@ -1,5 +1,6 @@
 import UserRepository from '../repositories/userRepository';
 import bcrypt from 'bcryptjs';
+import { ImgurClient } from 'imgur';
 
 import type {
   ChangeUsername,
@@ -21,9 +22,11 @@ import type {
 
 export default class UserService {
   private userRepository: UserRepository;
+  private ImgurClient: ImgurClient;
 
   constructor() {
     this.userRepository = new UserRepository();
+    this.ImgurClient = new ImgurClient({ clientId: 'c6a5a73a3d14939' });
   }
 
   private async verifyEmailAndPassord(
@@ -138,25 +141,14 @@ export default class UserService {
   }
 
   public async changePicture(data: ChangePicture) {
-    const response = await fetch('https://api.imgur.com/3/image', {
-      method: 'POST',
-      headers: {
-        Authorization: `Client-ID c6a5a73a3d14939`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ image: data.imageData }),
+    const response = await this.ImgurClient.upload({
+      image: data.imageData,
+      type: 'base64',
     });
 
-    const responseData = await response.json();
+    if (!response.success) throw new Error(JSON.stringify(response));
 
-    if (!responseData.success) throw new Error(JSON.stringify(responseData));
-
-    const imageLink: string = await responseData.data.link;
-
-    await this.userRepository.updateUserData({
-      id: data.userId,
-      picture: imageLink,
-    });
+    const imageLink: string = response.data.link;
 
     return imageLink;
   }
