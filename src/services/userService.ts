@@ -150,7 +150,10 @@ export default class UserService {
     });
 
     const responseData = await response.json();
-    const imageLink = responseData.data.link;
+
+    if (!responseData.success) throw new Error(responseData.message);
+
+    const imageLink: string = await responseData.data.link;
 
     await this.userRepository.updateUserData({
       id: data.userId,
