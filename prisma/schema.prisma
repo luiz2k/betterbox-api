@@ -36,9 +36,6 @@ model user {
   email    String @unique @db.VarChar(254)
   password String @db.Char(60)
 
-  picture String?
-  bio     String? @db.VarChar(100)
-
   refreshToken refreshToken[]
   revokedToken revokedToken[]
 
