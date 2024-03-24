@@ -14,9 +14,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const userRepository_1 = __importDefault(require("../repositories/userRepository"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const imgur_1 = require("imgur");
 class UserService {
     constructor() {
         this.userRepository = new userRepository_1.default();
+        this.ImgurClient = new imgur_1.ImgurClient({ clientId: 'c6a5a73a3d14939' });
     }
     verifyEmailAndPassord(data) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -111,22 +113,13 @@ class UserService {
     }
     changePicture(data) {
         return __awaiter(this, void 0, void 0, function* () {
-            const response = yield fetch('https://api.imgur.com/3/image', {
-                method: 'POST',
-                headers: {
-                    Authorization: `Client-ID c6a5a73a3d14939`,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ image: data.imageData }),
+            const response = yield this.ImgurClient.upload({
+                image: data.imageData,
+                type: 'base64',
             });
-            const responseData = yield response.json();
-            if (!responseData.success)
-                throw new Error(JSON.stringify(responseData));
-            const imageLink = yield responseData.data.link;
-            yield this.userRepository.updateUserData({
-                id: data.userId,
-                picture: imageLink,
-            });
+            if (!response.success)
+                throw new Error(JSON.stringify(response));
+            const imageLink = response.data.link;
             return imageLink;
         });
     }
