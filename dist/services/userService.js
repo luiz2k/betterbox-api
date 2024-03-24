@@ -111,18 +111,17 @@ class UserService {
     }
     changePicture(data) {
         return __awaiter(this, void 0, void 0, function* () {
-            const formData = new FormData();
-            formData.append('image', data.imageData);
             const response = yield fetch('https://api.imgur.com/3/image', {
                 method: 'POST',
                 headers: {
                     Authorization: `Client-ID c6a5a73a3d14939`,
+                    'Content-Type': 'application/json',
                 },
-                body: formData,
+                body: JSON.stringify({ image: data.imageData }),
             });
             const responseData = yield response.json();
             if (!responseData.success)
-                throw new Error(String(responseData));
+                throw new Error(JSON.stringify(responseData));
             const imageLink = yield responseData.data.link;
             yield this.userRepository.updateUserData({
                 id: data.userId,

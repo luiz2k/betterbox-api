@@ -138,15 +138,13 @@ export default class UserService {
   }
 
   public async changePicture(data: ChangePicture) {
-    const formData = new FormData();
-    formData.append('image', data.imageData);
-
     const response = await fetch('https://api.imgur.com/3/image', {
       method: 'POST',
       headers: {
         Authorization: `Client-ID c6a5a73a3d14939`,
+        'Content-Type': 'application/json',
       },
-      body: formData,
+      body: JSON.stringify({ image: data.imageData }),
     });
 
     const responseData = await response.json();
