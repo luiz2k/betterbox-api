@@ -121,7 +121,9 @@ class UserService {
                 body: formData,
             });
             const responseData = yield response.json();
-            const imageLink = responseData.data.link;
+            if (!responseData.success)
+                throw new Error(responseData.message);
+            const imageLink = yield responseData.data.link;
             yield this.userRepository.updateUserData({
                 id: data.userId,
                 picture: imageLink,
