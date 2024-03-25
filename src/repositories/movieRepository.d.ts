@@ -3,6 +3,7 @@ import {
   movieWatched as MovieWatched,
   favoriteMovie as FavoriteMovie,
   movieComment as MovieComment,
+  favoriteMovie as FavoriteMovie,
 } from '@prisma/client';
 
 export type GetAllComments = {
@@ -15,4 +16,4 @@ export type GetAllComments = {
   };
 };
 
-export { Movie, MovieWatched, FavoriteMovie, MovieComment };
+export { Movie, MovieWatched, FavoriteMovie, MovieComment, FavoriteMovie };
